@@ -41,3 +41,5 @@
 | Gnome-calculator | qalculate-gtk<br>Galculator | qalculate-qt<br>SpeedCrunch |
 | Nautilus         | Thunar                      | PCManFM-Qt                  |
 | Gedit            | Pluma<br>Geany              | FeatherPad                  |
+| Gnome-calendar   | Planify<br>California<br>Orage<br>DateTime | Kalendar<br>QOwnNotes<br>Morgen(electron)<br>Focalboard(electron) |
+| ---------------- | ------------------------------------------ | ----------------------------------------------------------------- |
