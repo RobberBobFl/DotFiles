@@ -1,0 +1,231 @@
+* {
+font-family: "Fira Sans Semibold", "Font Awesome 6 Free", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+}
+
+window#waybar {
+	background-color: rgba(43, 48, 59, 0.0);
+    color: #ffffff;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+/* Left-most: Arch icon
+#custom-appmenu {
+font-size: 14px;
+background-image: url('/usr/share/icons/cachyos.svg');
+background-color: #1e222a;
+background-position: center;
+background-repeat: no-repeat;
+background-size: contain;
+padding: 0px 10px;
+margin: 4px 0px;
+}*/
+/*menu*/
+#custom-appmenuicon {
+color: #000000; /* светлый текст */
+background-color: #b4befe;
+border-radius: 10px;
+padding: 0px 7px; /* 1 заполнение внутрянки вверх и низ, 2 лево и право */
+margin: 7px 5px; /*1 Расстяжка внутрянки лево и право, 2 отступы лево и право */
+font-size: 14px;
+font-weight: bold;
+transition: all 0.3s ease;
+}
+/* Right-most: Clock */
+#clock {
+color: #cdd6f4;
+background-color: #1e222a;
+border-radius: 10px;
+padding: 0px 7px;
+margin: 7px 1px;
+font-size: 14px;
+transition: all 0.3s ease;
+}
+
+#bt-wifi {
+color: #cdd6f4;
+background-color: #1e222a;
+border-radius: 10px;
+padding: 0px 5px;
+margin: 7px 1px;
+font-size: 14px;
+transition: all 0.3s ease;
+}
+
+/* Tooltip */
+tooltip {
+    border-radius: 10px;
+    background-color: #0f1117;
+    color: #c0c0c0;
+    padding: 0px 12px;
+    font-size: 13px;
+}
+
+/* Active window title */
+#window {
+color: #cdd6f4;
+background-color: #1e222a;
+border-radius: 10px;
+padding: 0px 4px;
+margin: 0px 0px;
+font-size: 14px;
+transition: all 0.3s ease;
+}
+
+/* Workspaces */
+#workspaces {
+background-color: #45475a;
+border-radius: 10px;
+margin: 7px 1px;
+}
+
+#workspaces button label {
+color: #b4befe;
+padding: 0 7px;
+}
+
+#workspaces button {
+padding: 0px 7px;
+border-radius: 8px;
+background: transparent;
+min-width: 0px;
+}
+
+#workspaces button.active label {
+color: #1e1e2e;
+}
+
+#workspaces button:hover {
+color: rgba(0, 0, 0, 0);
+}
+
+#workspaces button.active,
+#workspaces button.focused{
+background-color: #b4befe;
+border-radius: 10px;
+padding: 0 7px;
+font-weight: bold;
+}
+#workspaces button.urgent {
+background-color: #f38ba8;
+}
+
+/* Power button */
+#custom-power {
+color: #cdd6f4; /* светлый текст */
+background-color: #EE4B2B;
+border-radius: 10px;
+padding: 0px 7px;
+margin: 7px 5px;
+font-size: 14px;
+transition: all 0.3s ease;
+}
+
+/* Language module */
+#language {
+color: #cdd6f4;
+background-color: #1e222a;
+border-radius: 10px;
+padding: 0px 5px;
+margin: 7px 1px;
+font-size: 14px;
+transition: all 0.3s ease;
+border-top-left-radius: 10px;
+border-bottom-left-radius: 10px;
+border-top-right-radius: 0;
+border-bottom-right-radius: 0;
+margin-right: 0; /* убрать зазор */
+}
+
+#custom-clipboard {
+color: #cdd6f4;
+background-color: #1e222a;
+border-radius: 10px;
+padding: 0px 5px;
+margin: 7px 1px;
+font-size: 14px;
+transition: all 0.3s ease;
+border-top-right-radius: 10px;
+border-bottom-right-radius: 10px;
+border-top-left-radius: 0;
+border-bottom-left-radius: 0;
+margin-left: 0; /* убрать зазор */
+}
+
+/* Taskbar */
+#taskbar {
+color: #cdd6f4;
+background-color: #1e222a;
+border-radius: 10px;
+padding: 0px 5px;
+margin: 7px 1px;
+font-size: 14px;
+transition: all 0.3s ease;
+}
+
+/* System info modules */
+#backlight,
+#bluetooth,
+#battery,
+#tray,
+#custom-updates,
+#custom-notification {
+color: #cdd6f4;
+background-color: #1e222a;
+border-radius: 10px;
+padding: 0px 5px;
+margin: 7px 1px;
+font-size: 14px;
+transition: 0.3s ease;
+}
+#network {
+color: #cdd6f4;
+background-color: #1e222a;
+border-radius: 10px;
+padding: 0px 10px;
+margin: 5px 4px;
+font-size: 14px;
+font-weight: 500;
+transition: 0.3s ease;
+}
+#network.disabled,
+#network.disconnected {
+color: #bf616a;      /* красный для отключенной сети */
+}
+#pulseaudio{
+color: #cdd6f4;
+background-color: #1e222a;
+border-radius: 10px;
+padding: 0px 5px;
+margin: 7px 1px;
+font-size: 14px;
+transition: 0.3s ease;
+}
+
+/* Battery critical */
+#battery.critical:not(.charging) {
+background-color: #e65100;
+color: #ffffff;
+animation: blink 0.5s linear infinite alternate;
+}
+
+/* Hover right */
+#pulseaudio:hover,
+#clock:hover,
+#language:hover,
+#custom-clipboard:hover,
+#bluetooth:hover,
+#network:hover,
+#backlight:hover,
+#battery:hover {
+	background-color: #2a2f3a;
+	transition: 0.3s ease;
+}
+
+
+@keyframes blink {
+    to {
+        background-color: #0f1117;
+        color: #ffffff;
+    }
+}
