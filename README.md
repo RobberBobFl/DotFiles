@@ -18,7 +18,7 @@
 4. Swaylock 
 5. Wlogout 
 6. Alacritty 
-7. Wl-paste 
+7. cliphist 
 8. Wlsunset 
 9. swww/awww/swaybg - скрипты на авто смену обоев/смена по кнопке 
 ## Нужный софт, для комфортного использования и под мой конф niri
