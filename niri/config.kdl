@@ -18,6 +18,10 @@ input {
         natural-scroll // Включить естественную прокрутку (как на macOS)
     }
 
+    mouse {
+        accel-profile "flat"
+    }
+
     focus-follows-mouse // Фокус на окне под курсором
     workspace-auto-back-and-forth // Переключение рабочих столов туда и обратно
 }
