@@ -99,12 +99,12 @@
 
   // Clock
   "clock": {
-    "format": " {:%H:%M}",
-    "format-alt": "{:%A, %d.%m.%Y}",
+    "format":"         {0:%H:%M}\n{0:%d.%m.%Y}",
+    "format-alt": "{0:%A}\n{0:%d %B}",
     "tooltip": false,
     "max-leght": 50,
     "on-click-right": "bash -c 'gnome-calendar'"
-    },
+},
 
   "niri/language": {
     "format": "{short}"
