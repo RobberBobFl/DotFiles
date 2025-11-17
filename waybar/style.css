@@ -21,14 +21,15 @@ padding: 0px 12px;
 margin: 3px 0px;   
 } */ 
 /*menu*/
-#custom-appmenuicon {
-padding: 2 18;
-margin: 3 4 3 3;
-color: #1e90ff;
+#custom-appmenu {
+font-size: 13px;
+background-image: url('/home/borrow/.config/waybar/Logo_alt_company_small.png');/*Если арч,то archlinux.svg*/
 background-color: rgba(43, 48, 59, 0.0);
-border: none;
-border-radius: 20;
-}
+background-position: center;
+background-repeat: no-repeat;
+background-size: contain;
+padding: 0px 12px;
+margin: 3px 0px 3px 1px; 
 /* Right-most: Clock */
 #clock {
 color: #cdd6f4;
@@ -74,7 +75,7 @@ margin: 4px 4px;
 }
 #workspaces button label {
 color: #b4befe;
-padding: 0 12px; 
+padding: 0px 12px; 
 }
 #workspaces button {
 padding: 0px 12px; 
@@ -92,7 +93,7 @@ color: rgba(0, 0, 0, 0);
 #workspaces button.focused{
 background-color: #b4befe;
 border-radius: 10px;
-padding: 0 12px;
+padding: 0px 12px;
 font-weight: bold;
 }
 #workspaces button.urgent {
@@ -100,12 +101,14 @@ background-color: #f38ba8;
 }
 /* Power button */
 #custom-power {
-padding: 2 18;
-margin: 3 8 3 4; 
-color: #ff3333;
-background-color:rgba(43, 48, 59, 0.0);
-border: none;
-border-radius: 20;
+font-size: 13px;
+background-image: url('/home/borrow/.config/waybar/power.svg');
+background-color: rgba(43, 48, 59, 0.0);
+background-position: center;
+background-repeat: no-repeat;
+background-size: contain;
+padding: 0px 12px;
+margin: 3px 2px 3px 0px;   
 }
 /* Language module */
 #language {
