@@ -98,9 +98,10 @@
   },
 
   // Clock
-  "clock": {
+"clock": {
+    "locale":"ru_RU.UTF-8",
     "format":"         {0:%H:%M}\n{0:%d.%m.%Y}",
-    "format-alt": "{0:%A}\n{0:%d %B}",
+    "format-alt": "{0:L%A}\n{0:L%d %B}",
     "tooltip": false,
     "max-leght": 50,
     "on-click-right": "bash -c 'gnome-calendar'"
