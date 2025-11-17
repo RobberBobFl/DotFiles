@@ -75,7 +75,7 @@
 
   // Power Menu
   "custom/power": {
-    "format": "⏻",
+    "format": " ",
     "on-click": "~/.config/waybar/scripts/custom-power.sh",
     "tooltip": false
   },
