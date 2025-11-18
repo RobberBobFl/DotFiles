@@ -1,15 +1,13 @@
 Для niri 
 ## Обязательный софт
 
-`xdg-desktop-portal-gtk`
-`xdg-desktop-portal-gnome`
-`gnome-keyring`
-`xdg-desktop-portal-wlr`(Может пригодится)
-`xdg-terminal-exec`(Если не будет открываться терминал)
-
-`plasma-polkit-agent` `polkit-kde-authentication` в альте `polkit` ,крч что-то из этого `polkit-kde-agent` это в альте
-
-` xwayland-satellite` в альте возможно подойдёт ` xwayland`
+- xdg-desktop-portal-gtk
+- xdg-desktop-portal-gnome
+- gnome-keyring
+- xdg-desktop-portal-wlr(Может пригодится)
+- xdg-terminal-exec(Если не будет открываться терминал)
+- hyprpolkitagent
+- xwayland-satellite
 ## Доп. софт
 
 1. Waybar 
