@@ -6,7 +6,8 @@
 - gnome-keyring
 - xdg-desktop-portal-wlr(Может пригодится)
 - xdg-terminal-exec(Если не будет открываться терминал)
-- hyprpolkitagent
+- hyprpolkitagent(arch)
+- polkit-hyprland(alt)
 - xwayland-satellite
 ## Доп. софт
 
