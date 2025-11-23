@@ -18,30 +18,45 @@ sudo apt-get install xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyri
 - polkit-hyprland(alt)
 - xwayland-satellite
 
-## Доп. софт
+## Доп. софт для niri
+arch
+```bash
+sudo pacman -S waybar wofi mako swaylock wlogout alacritty cliphist wlsunset swww qt5ct qt6ct qt6-wayland qt5-wayland
+```
+Alt
+```bash
+sudo apt-get waybar wofi mako swaylock wlogout alacritty cliphist wlsunset swaybg qt5ct qt6ct qt6-wayland qt5-wayland
+```
+- Waybar 
+- Wofi
+- Mako 
+- Swaylock 
+- Wlogout 
+- Alacritty 
+- cliphist 
+- Wlsunset
+- qt5ct
+- qt6ct
+- qt5-wayland
+- qt6-wayland 
+- swww/awww/swaybg
 
-1. Waybar 
-2. Wofi
-3. Mako 
-4. Swaylock 
-5. Wlogout 
-6. Alacritty 
-7. cliphist 
-8. Wlsunset 
-9. swww/awww/swaybg - скрипты на авто смену обоев/смена по кнопке 
-
-## Нужный софт, для комфортного использования и под мой конф niri
-
-1. Micro
-2. V2rayn
-3. Gnome-calculator
-4. Pavucontrol
-5. Blueman-manager
-6. Networkmanager networkmanager-applet
-7. Nautilus
-8. Gedit
-9. Networkmanager Networkmanager-applet
-
+## Нужный мне софт
+arch
+```bash
+sudo pacman -s micro gnome-calendar pavucontrol blueman Networkmanager networkmanager-applet nautilus gedit nwg-look timeshift Kvantum obsidian qbittorrent
+```
+```bash
+yay -S v2rayn portprton yandex-browser
+```
+Alt
+```bash
+sudo apt-get install micro gnome-calendar pavucontrol blueman NetworkManager NetworkManager-applet-gtk nautilus gedit nwg-look timeshift Kvantum obsidian qbittorrent portproton
+```
+```bash
+epm play yandex-browser
+epm play v2rayn
+```
 ## Аналоги без `libadwaita`
 
 
