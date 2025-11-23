@@ -1,6 +1,19 @@
 Для niri 
-## Обязательный софт
+## Установка
+```bash
+git clone https://github.com/RobberBobFl/DotFiles.git
+```
+Из home/.config в ~/.config
+Из usr/share в /usr/share/
 
+Темы, курсор, иконки поставить в nwg-look и в Kvantum для qt
+
+Приминить тёмную тему для libadwaita
+```bash
+dconf write /org/gnome/desktop/interface/color-scheme '"prefer-dark"'
+```
+
+## Обязательный софт
 Arch
 ```bash
 sudo pacman -S xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring xdg-terminal-exec hyprpolkitagent xwayland-satellite
@@ -66,4 +79,3 @@ epm play v2rayn
 | Nautilus         | Thunar                      | PCManFM-Qt                  |
 | Gedit            | Pluma<br>Geany              | FeatherPad                  |
 | Gnome-calendar   | Planify<br>California<br>Orage<br>DateTime | Kalendar<br>QOwnNotes<br>Morgen(electron)<br>Focalboard(electron) |
-| ---------------- | ------------------------------------------ | ----------------------------------------------------------------- |
