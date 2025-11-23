@@ -1,6 +1,14 @@
 Для niri 
 ## Обязательный софт
 
+Arch
+```bash
+sudo pacman -S xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring xdg-terminal-exec hyprpolkitagent xwayland-satellite
+```
+Alt
+```bash
+sudo apt-get install xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring xdg-terminal-exec polkit-hyprland xwayland-satellite
+```
 - xdg-desktop-portal-gtk
 - xdg-desktop-portal-gnome
 - gnome-keyring
@@ -9,6 +17,7 @@
 - hyprpolkitagent(arch)
 - polkit-hyprland(alt)
 - xwayland-satellite
+
 ## Доп. софт
 
 1. Waybar 
@@ -20,6 +29,7 @@
 7. cliphist 
 8. Wlsunset 
 9. swww/awww/swaybg - скрипты на авто смену обоев/смена по кнопке 
+
 ## Нужный софт, для комфортного использования и под мой конф niri
 
 1. Micro
