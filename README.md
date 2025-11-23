@@ -32,13 +32,14 @@ sudo apt-get install xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyri
 - xwayland-satellite
 
 ## Доп. софт для niri
-arch
+Arch
 ```bash
-sudo pacman -S waybar wofi mako swaylock wlogout alacritty cliphist wlsunset swww qt5ct qt6ct qt6-wayland qt5-wayland
+sudo pacman -S waybar wofi mako swaylock wlogout alacritty cliphist wlsunset swww qt5ct qt6ct qt6-wayland qt5-wayland ttf-roboto ttf-fira-code ttf-firacode-nerd
 ```
 Alt
 ```bash
-sudo apt-get waybar wofi mako swaylock wlogout alacritty cliphist wlsunset swaybg qt5ct qt6ct qt6-wayland qt5-wayland
+sudo apt-get waybar wofi mako swaylock wlogout alacritty cliphist wlsunset swaybg qt5ct qt6ct qt6-wayland qt5-wayland fonts-ttf-roboto fonts-ttf-fira-code
+ fonts-ttf-fira-code-nerd
 ```
 - Waybar 
 - Wofi
@@ -55,7 +56,7 @@ sudo apt-get waybar wofi mako swaylock wlogout alacritty cliphist wlsunset swayb
 - swww/awww/swaybg
 
 ## Нужный мне софт
-arch
+Arch
 ```bash
 sudo pacman -s micro gnome-calendar pavucontrol blueman Networkmanager networkmanager-applet nautilus gedit nwg-look timeshift Kvantum obsidian qbittorrent
 ```
