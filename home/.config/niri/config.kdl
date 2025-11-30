@@ -46,7 +46,7 @@ binds {
     MOD+RETURN	                        hotkey-overlay-title="Открыть терминал: alacritty" { spawn-sh "alacritty"; }
     MOD+SPACE                           hotkey-overlay-title="Открыть лаунчер приложений: wofi" { spawn-sh "wofi"; }
     MOD+B                               hotkey-overlay-title="Открыть браузер: yandex" { spawn-sh "yandex-browser-corporate"; }
-    MOD+ALT+L                           hotkey-overlay-title="Блокировка экрана: swaylock" { spawn-sh "swaylock"; }
+    MOD+ALT+L                           hotkey-overlay-title="Блокировка экрана: gtklock" { spawn-sh "gtklock"; }
     MOD+V                               hotkey-overlay-title="Clipboard history" { spawn-sh "cliphist list | wofi --dmenu | cliphist decode | wl-copy"; }
     MOD+SHIFT+T                         hotkey-overlay-title="Telegram"          { spawn-sh "Telegram";}
     // Выбери свой файловый менеджер
