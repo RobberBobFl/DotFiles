@@ -43,17 +43,17 @@ sudo apt-get install xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyri
 ## Доп. софт для niri
 Arch
 ```bash
-sudo pacman -S waybar wofi mako swaylock wlogout alacritty cliphist wlsunset swww qt5ct qt6ct qt6-wayland qt5-wayland ttf-roboto ttf-fira-code ttf-firacode-nerd
+sudo pacman -S waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module wlogout alacritty cliphist wlsunset swww qt5ct qt6ct qt6-wayland qt5-wayland ttf-roboto ttf-fira-code ttf-firacode-nerd
 ```
 Alt
 ```bash
-sudo apt-get waybar wofi mako swaylock wlogout alacritty cliphist wlsunset swaybg qt5ct qt6ct qt6-wayland qt5-wayland fonts-ttf-roboto fonts-ttf-fira-code
+sudo apt-get waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module wlogout alacritty cliphist wlsunset swaybg qt5ct qt6ct qt6-wayland qt5-wayland fonts-ttf-roboto fonts-ttf-fira-code
  fonts-ttf-fira-code-nerd
 ```
 - Waybar 
 - Wofi
 - Mako 
-- Swaylock 
+- gtklock 
 - Wlogout 
 - Alacritty 
 - cliphist 

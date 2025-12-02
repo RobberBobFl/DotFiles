@@ -102,7 +102,12 @@ binds {
     MOD+SHIFT+CTRL+RIGHT                { move-column-to-monitor-right; }
     MOD+SHIFT+CTRL+UP                   { move-column-to-monitor-up; }
     MOD+SHIFT+CTRL+DOWN                 { move-column-to-monitor-down; }
-
+    MOD+SHIFT+J                         { consume-or-expel-window-left; }
+    MOD+SHIFT+K                         { consume-or-expel-window-right; }
+    
+    Mod+COMMA                           { consume-window-into-column; }
+    Mod+PERIOD                          { expel-window-from-column; }
+    
     // ─── Переключение рабочих столов ───
     MOD+WHEELSCROLLDOWN                 cooldown-ms=150 { focus-workspace-down; }
     MOD+WHEELSCROLLUP                   cooldown-ms=150 { focus-workspace-up; }
@@ -142,13 +147,15 @@ binds {
     MOD+TAB                             { focus-workspace-previous; }
 
     // ─── Управление компоновкой ───
-    MOD+CTRL+F                          { expand-column-to-available-width; }
+    MOD+CTRL+F                          { maximize-column; }
     MOD+C                               { center-column; }
     MOD+CTRL+C                          { center-visible-columns; }
     MOD+MINUS                           { set-column-width "-10%"; }
     MOD+EQUAL                           { set-column-width "+10%"; }
     MOD+SHIFT+MINUS                     { set-window-height "-10%"; }
     MOD+SHIFT+EQUAL                     { set-window-height "+10%"; }
+    MOD+R                               { switch-preset-column-width; }
+    Mod+Shift+R                         { switch-preset-window-height; }
 
     // ─── Режимы ───
     MOD+T                               { toggle-window-floating; }
@@ -195,15 +202,15 @@ binds {
         center-focused-column "never" // Не центрировать автоматически фокусируемую колонку
 
         preset-column-widths {
-            proportion 0.33333
             proportion 0.5
+            proportion 0.33333
             proportion 0.66667
         }
 
-        focus-ring {
-            width 1.5
-            active-color "#b4befe"
-            inactive-color "#505050"
+        default-column-width { proportion 0.5; }
+
+        preset-window-heights { 
+            proportion 1.0
         }
 
         shadow {
