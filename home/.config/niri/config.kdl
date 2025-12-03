@@ -200,7 +200,7 @@ binds {
     layout {
         gaps 2 // Отступы между окнами
         center-focused-column "never" // Не центрировать автоматически фокусируемую колонку
-
+        always-center-single-column
         preset-column-widths {
             proportion 0.5
             proportion 0.33333
