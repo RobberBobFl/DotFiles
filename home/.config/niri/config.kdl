@@ -212,6 +212,11 @@ binds {
         preset-window-heights { 
             proportion 1.0
         }
+        focus-ring {
+            width 1.5
+            active-color "#b4befe"
+            inactive-color "#505050"
+        }
 
         shadow {
             softness 30
@@ -281,7 +286,7 @@ binds {
     // 🌐 Правило для Yandex Browser (Тайлинг, Фиксированный размер)
     window-rule {
         match app-id="Yandex-browser"
-        open-maximized true
+        open-maximized-to-edges true
         // open-floating false // Необязательно, так как тайлинг - это режим по умолчанию
         // Задаем желаемый размер 1902x1014 пикселей.
         // В режиме тайлинга niri будет пытаться применить этот размер как

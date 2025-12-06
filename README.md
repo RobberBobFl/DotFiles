@@ -67,14 +67,14 @@ sudo apt-get waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-
 ## Нужный мне софт
 Arch
 ```bash
-sudo pacman -s micro gnome-calendar pavucontrol blueman Networkmanager networkmanager-applet nautilus gedit nwg-look timeshift Kvantum obsidian qbittorrent nodejs npm neovim
+sudo pacman -s micro gnome-calendar pavucontrol blueman Networkmanager networkmanager-applet nautilus nwg-look timeshift Kvantum obsidian qbittorrent nodejs npm neovim featherpad yazi
 ```
 ```bash
 yay -S v2rayn portprton yandex-browser
 ```
 Alt
 ```bash
-sudo apt-get install micro gnome-calendar pavucontrol blueman NetworkManager NetworkManager-applet-gtk nautilus gedit nwg-look timeshift Kvantum obsidian qbittorrent portproton nodejs npm neovim
+sudo apt-get install micro gnome-calendar pavucontrol blueman NetworkManager NetworkManager-applet-gtk nautilus nwg-look timeshift Kvantum obsidian qbittorrent portproton nodejs npm neovim featherpad yazi
 ```
 ```bash
 epm play yandex-browser
