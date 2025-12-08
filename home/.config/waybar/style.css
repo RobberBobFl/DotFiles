@@ -30,6 +30,7 @@ background-repeat: no-repeat;
 background-size: contain;
 padding: 0px 12px;
 margin: 3px 0px 3px 1px; 
+}
 /* Right-most: Clock */
 #clock {
 color: #cdd6f4;
