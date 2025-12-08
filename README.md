@@ -47,7 +47,7 @@ sudo pacman -S waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerct
 ```
 Alt
 ```bash
-sudo apt-get waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module wlogout alacritty cliphist wlsunset swaybg qt5ct qt6ct qt6-wayland qt5-wayland fonts-ttf-roboto fonts-ttf-fira-code
+sudo apt-get install waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module wlogout alacritty cliphist wlsunset swaybg qt5ct qt6ct qt6-wayland qt5-wayland fonts-ttf-roboto fonts-ttf-fira-code
  fonts-ttf-fira-code-nerd
 ```
 - Waybar 
