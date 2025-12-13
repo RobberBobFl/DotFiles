@@ -13,13 +13,13 @@ input {
         numlock // Включить NumLock при старте
     }
 
+    mouse {
+        accel-profile "flat"
+    }
+
     touchpad {
         tap // Включить тап для клика
         natural-scroll // Включить естественную прокрутку (как на macOS)
-    }
-
-    mouse {
-        accel-profile "flat"
     }
 
     focus-follows-mouse // Фокус на окне под курсором
@@ -43,14 +43,14 @@ binds {
     MOD+SHIFT+ESCAPE                     { show-hotkey-overlay; }
 
     // ─── Приложения ───
-    MOD+RETURN	                        hotkey-overlay-title="Открыть терминал: alacritty" { spawn-sh "alacritty"; }
+    MOD+RETURN	                        hotkey-overlay-title="Открыть терминал: kitty" { spawn-sh "kitty"; }
     MOD+SPACE                           hotkey-overlay-title="Открыть лаунчер приложений: wofi" { spawn-sh "wofi"; }
-    MOD+B                               hotkey-overlay-title="Открыть браузер: yandex" { spawn-sh "yandex-browser-corporate"; }
+    MOD+B                               hotkey-overlay-title="Открыть браузер: yandex" { spawn-sh "yandex-browser-stable"; }
     MOD+ALT+L                           hotkey-overlay-title="Блокировка экрана: gtklock" { spawn-sh "gtklock"; }
     MOD+V                               hotkey-overlay-title="Clipboard history" { spawn-sh "cliphist list | wofi --dmenu | cliphist decode | wl-copy"; }
     MOD+SHIFT+T                         hotkey-overlay-title="Telegram"          { spawn-sh "Telegram";}
     // Выбери свой файловый менеджер
-    MOD+E                             hotkey-overlay-title="Файловый менеджер: Nautilus" { spawn-sh "nautilus"; }
+    MOD+E                             hotkey-overlay-title="Файловый менеджер: thunar" { spawn-sh "thunar"; }
 
     // ─── Управление звуком ───
     // Примеры назначения клавиш громкости для PipeWire & WirePlumber.
@@ -65,8 +65,8 @@ binds {
     XF86AudioPrev                       allow-when-locked=true { spawn-sh "playerctl previous"; }
     // Добавляю калькулятор по кнопке на клаве
     XF86Calculator {spawn "gnome-calculator";}
-    
-
+    XF86PowerOff allow-when-locked=true {spawn-sh "~/.config/waybar/scripts/custom-power.sh";}
+   
     // ─── Перемещение окон и фокус ───
     MOD+Q                               { close-window; }
 
@@ -107,7 +107,7 @@ binds {
     
     Mod+COMMA                           { consume-window-into-column; }
     Mod+PERIOD                          { expel-window-from-column; }
-    
+
     // ─── Переключение рабочих столов ───
     MOD+WHEELSCROLLDOWN                 cooldown-ms=150 { focus-workspace-down; }
     MOD+WHEELSCROLLUP                   cooldown-ms=150 { focus-workspace-up; }
@@ -181,10 +181,10 @@ binds {
 // ────────────── Автозапуск приложений ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
-    spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
-    spawn-sh-at-startup "swww-daemon" // Демон обоев
-    //spawn-sh-at-startup "swww img /путь/до/обоев" // Установить обои
-    spawn-sh-at-startup "/home/borrow/.config/waybar/scripts/random_walpap.sh" // Рандомные обои, каждые 2 часа
+    spawn-sh-at-startup "/usr/libexec/hyprpolkitagent &" // Polkit
+    //spawn-sh-at-startup "swww-daemon" // Демон обоев
+    spawn-sh-at-startup "swaybg -i ~/Pictures/wallpaper/bqogmi642yqf1.png" // Установить обои
+    //spawn-sh-at-startup "/home/borrow/.config/waybar/scripts/random_walpap.sh" // Рандомные обои, каждые 2 часа
     spawn-sh-at-startup "waybar" // Запустить Waybar
     spawn-sh-at-startup "v2rayn" //vpn
     spawn-sh-at-startup "/usr/lib/xdg-desktop-portal-gtk"
@@ -212,6 +212,7 @@ binds {
         preset-window-heights { 
             proportion 1.0
         }
+
         focus-ring {
             width 1.5
             active-color "#b4befe"
@@ -279,10 +280,11 @@ binds {
     window-rule {
         match app-id="org.telegram.desktop"
         open-floating true // Плавающий режим
-        // Задаем желаемый размер 1007x696 пикселей
+        //Задаем желаемый размер 1007x696 пикселей
         default-column-width { fixed 1007; }
         default-window-height { fixed 696; }
     }
+
     // 🌐 Правило для Yandex Browser (Тайлинг, Фиксированный размер)
     window-rule {
         match app-id="Yandex-browser"
@@ -332,16 +334,18 @@ binds {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#environment
 
     environment {
-        //DISPLAY ":1"
+        //DISPLAY ":0"
         ELECTRON_OZONE_PLATFORM_HINT "auto"
         QT_QPA_PLATFORM "wayland"
         QT_QPA_PLATFORMTHEME "qt6ct"
         QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
         XDG_SESSION_TYPE "wayland"
         XDG_CURRENT_DESKTOP "niri"
-        TERMINAL "Alacritty"
+        XDG_TERMINAL_EXEC "kitty"
+        TERMINAL "kitty"
     }
 
     hotkey-overlay {
         skip-at-startup
     }
+    

@@ -86,7 +86,7 @@ function copy
         command cp $argv
     end
 end
-
+set fish_greeting ""
 ## Useful aliases
 # Replace ls with eza
 alias ls='eza -al --color=always --group-directories-first --icons' # preferred listing
