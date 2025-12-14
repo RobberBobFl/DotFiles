@@ -181,7 +181,7 @@ binds {
 // ────────────── Автозапуск приложений ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
-    spawn-sh-at-startup "/usr/libexec/hyprpolkitagent &" // Polkit
+    spawn-sh-at-startup "/usr/libexec/mate-authentication-agent-1 &" // Polkit
     //spawn-sh-at-startup "swww-daemon" // Демон обоев
     spawn-sh-at-startup "swaybg -i ~/Pictures/wallpaper/bqogmi642yqf1.png" // Установить обои
     //spawn-sh-at-startup "/home/borrow/.config/waybar/scripts/random_walpap.sh" // Рандомные обои, каждые 2 часа

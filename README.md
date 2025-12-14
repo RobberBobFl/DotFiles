@@ -25,19 +25,19 @@ dconf write /org/gnome/desktop/interface/color-scheme '"prefer-dark"'
 ## Обязательный софт
 Arch
 ```bash
-sudo pacman -S xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring xdg-terminal-exec hyprpolkitagent xwayland-satellite
+sudo pacman -S xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring xdg-terminal-exec mate-polkit xwayland-satellite
 ```
 Alt
 ```bash
-sudo apt-get install xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring xdg-terminal-exec polkit-hyprland xwayland-satellite
+sudo apt-get install xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring xdg-terminal-exec mate-polkit xwayland-satellite
 ```
 - xdg-desktop-portal-gtk
 - xdg-desktop-portal-gnome
 - gnome-keyring
 - xdg-desktop-portal-wlr(Может пригодится)
 - xdg-terminal-exec(Если не будет открываться терминал)
-- hyprpolkitagent(arch)
-- polkit-hyprland(alt)
+- mate-polkit
+- mate-polkit
 - xwayland-satellite
 
 ## Доп. софт для niri
