@@ -273,6 +273,11 @@ binds {
     }
 
     window-rule {
+        match app-id="thunar" title=r#"^Переименовать"#
+        open-floating true 
+    }
+
+    window-rule {
         geometry-corner-radius 4 // Установить радиус всех окон в 4
         clip-to-geometry true
     }
