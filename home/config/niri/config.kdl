@@ -147,7 +147,7 @@ binds {
     MOD+TAB                             { focus-workspace-previous; }
 
     // ─── Управление компоновкой ───
-    MOD+CTRL+F                          { maximize-column; }
+    MOD+CTRL+F                          { maximize-window-to-edges; }
     MOD+C                               { center-column; }
     MOD+CTRL+C                          { center-visible-columns; }
     MOD+MINUS                           { set-column-width "-10%"; }

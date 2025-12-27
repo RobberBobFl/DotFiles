@@ -63,7 +63,8 @@
   "custom/appmenu": {
     "format": "   ",
     "on-click": "~/.config/waybar/scripts/custom-power.sh", //"sleep 0.2;wofi -show drun -replace"
-    "tooltip": false
+    "tooltip": false,
+    "on-click-right":"~/.config/waybar/scripts/change-wallpap.sh", 
   },
 
   // wofi Application Launcher

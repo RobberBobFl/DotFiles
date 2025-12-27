@@ -43,11 +43,11 @@ sudo apt-get install xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyri
 ## Доп. софт для niri
 Arch
 ```bash
-sudo pacman -S waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module wlogout alacritty cliphist wlsunset swww qt5ct qt6ct qt6-wayland qt5-wayland ttf-roboto ttf-fira-code ttf-firacode-nerd
+sudo pacman -S waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module wlogout alacritty cliphist wlsunset awww qt5ct qt6ct qt6-wayland qt5-wayland ttf-roboto ttf-fira-code ttf-firacode-nerd
 ```
 Alt
 ```bash
-sudo apt-get install waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module wlogout alacritty cliphist wlsunset swaybg qt5ct qt6ct qt6-wayland qt5-wayland fonts-ttf-roboto fonts-ttf-fira-code
+sudo apt-get install waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module wlogout alacritty cliphist wlsunset awww qt5ct qt6ct qt6-wayland qt5-wayland fonts-ttf-roboto fonts-ttf-fira-code
  fonts-ttf-fira-code-nerd
 ```
 - Waybar 
@@ -67,14 +67,14 @@ sudo apt-get install waybar wofi mako gtklock gtklock-powerbar-module gtklock-pl
 ## Нужный мне софт
 Arch
 ```bash
-sudo pacman -s micro gnome-calendar pavucontrol blueman Networkmanager networkmanager-applet thunar nwg-look timeshift Kvantum obsidian qbittorrent nodejs npm neovim geany geany-themes yazi git mangohud kitty 
+sudo pacman -s micro gnome-calendar pavucontrol blueman Networkmanager networkmanager-applet thunar nwg-look timeshift Kvantum obsidian qbittorrent nodejs npm neovim geany geany-themes yazi git mangohud kitty ripgrep eza
 ```
 ```bash
 yay -S v2rayn portprton yandex-browser
 ```
 Alt
 ```bash
-sudo apt-get install micro gnome-calendar pavucontrol blueman NetworkManager NetworkManager-applet-gtk thunar nwg-look timeshift Kvantum obsidian qbittorrent portproton nodejs npm neovim geany geany-themes yazi git mangohud kitty
+sudo apt-get install micro gnome-calendar pavucontrol blueman NetworkManager NetworkManager-applet-gtk thunar nwg-look timeshift Kvantum obsidian qbittorrent portproton nodejs npm neovim geany geany-themes yazi git mangohud kitty ripgrep ripgrep eza
 ```
 ```bash
 epm play yandex-browser
