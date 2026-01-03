@@ -20,10 +20,10 @@ cp -r ~/DotFiles/home/config/* ~/.config/
 ```bash
 sudo cp -r ~/DotFiles/usr/share/* /usr/share/
 ```
-Из ~/DotFiles/wallpapre → в ~/Pictures/wallpaper/
+Из ~/DotFiles/wallpaper → в ~/Pictures/wallpaper/
 ```bash
 mkdir -p ~/Pictures/wallpaper
-cp ~/DotFiles/wallpapre/* ~/Pictures/wallpaper/
+cp ~/DotFiles/wallpaper/* ~/Pictures/wallpaper/
 ```
 
 Темы, курсор, иконки поставить в nwg-look и в Kvantum для qt
