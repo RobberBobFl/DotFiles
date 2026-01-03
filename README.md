@@ -12,8 +12,19 @@
 ```bash
 git clone https://github.com/RobberBobFl/DotFiles.git
 ```
-Из home/.config в ~/.config
+Из home/config в ~/.config
+```bash
+cp -r ~/DotFiles/home/config/* ~/.config/
+```
 Из usr/share в /usr/share/
+```bash
+sudo cp -r ~/DotFiles/usr/share/* /usr/share/
+```
+Из ~/DotFiles/wallpapre → в ~/Pictures/wallpaper/
+```bash
+mkdir -p ~/Pictures/wallpaper
+cp ~/DotFiles/wallpapre/* ~/Pictures/wallpaper/
+```
 
 Темы, курсор, иконки поставить в nwg-look и в Kvantum для qt
 
