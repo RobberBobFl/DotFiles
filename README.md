@@ -36,7 +36,10 @@ dconf write /org/gnome/desktop/interface/color-scheme '"prefer-dark"'
 ## Обязательный софт
 Arch
 ```bash
-sudo pacman -S xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring xdg-terminal-exec mate-polkit xwayland-satellite
+sudo pacman -S xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyring xdg-terminal-exec xwayland-satellite
+```
+```bash
+yay -S mate-polkit
 ```
 Alt
 ```bash
@@ -54,7 +57,10 @@ sudo apt-get install xdg-desktop-portal-gtk xdg-desktop-portal-gnome gnome-keyri
 ## Доп. софт для niri
 Arch
 ```bash
-sudo pacman -S waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module wlogout alacritty cliphist wlsunset awww qt5ct qt6ct qt6-wayland qt5-wayland ttf-roboto ttf-fira-code ttf-firacode-nerd
+sudo pacman -S waybar wofi mako gtklock gtklock-powerbar-module gtklock-playerctl-module alacritty cliphist wlsunset qt5ct qt6ct qt6-wayland qt5-wayland ttf-roboto ttf-fira-code ttf-firacode-nerd
+```
+```bash
+yay -S awww wlogout
 ```
 Alt
 ```bash
@@ -78,18 +84,17 @@ sudo apt-get install waybar wofi mako gtklock gtklock-powerbar-module gtklock-pl
 ## Нужный мне софт
 Arch
 ```bash
-sudo pacman -s micro gnome-calendar pavucontrol blueman Networkmanager networkmanager-applet thunar nwg-look timeshift Kvantum obsidian qbittorrent nodejs npm neovim geany geany-themes yazi git mangohud kitty ripgrep eza
+sudo pacman -s micro gnome-calendar pavucontrol blueman networkmanager network-manager-applet thunar nwg-look timeshift Kvantum obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty ripgrep eza
 ```
 ```bash
-yay -S v2rayn portprton yandex-browser
+yay -S v2rayn portprton yandex-browser geany-themes 
 ```
 Alt
 ```bash
 sudo apt-get install micro gnome-calendar pavucontrol blueman NetworkManager NetworkManager-applet-gtk thunar nwg-look timeshift Kvantum obsidian qbittorrent portproton nodejs npm neovim geany geany-themes yazi git mangohud kitty ripgrep ripgrep eza
 ```
 ```bash
-epm play yandex-browser
-epm play v2rayn
+epm play yandex-browser v2rayn
 ```
 ## Аналоги без `libadwaita`
 
