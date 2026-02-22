@@ -8,7 +8,7 @@ input {
         xkb {
             layout "us,ru" // Использовать раскладку клавиатуры US и RU
 	    // variant "," // 
-	    options "grp:alt_shift_toggle" // Переключение раскладки Alt+Shift
+	    options "grp:alt_shift_toggle,ctrl:swapcaps" // Переключение раскладки Alt+Shift
         }
         numlock // Включить NumLock при старте
     }
