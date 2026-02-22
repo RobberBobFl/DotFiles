@@ -15,14 +15,14 @@ window#waybar.hidden {
 /*Left-most: Arch icon*/
 #custom-appmenu {
   font-size: 13px;
-  background-image: url('/home/borrow/.config/waybar/Logo_alt_company_small.png');
+  background-image: url('/home/borrow/.config/waybar/CachyOS_Logo.svg');
   /*Если арч,то archlinux.svg*/
   background-color: rgba(43, 48, 59, 0.0);
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
   padding: 0px 12px;
-  margin: 3px 0px 3px 1px;
+  margin: 0px 0px 0px 1px;
 }
 
 /*menu*/
@@ -41,7 +41,7 @@ window#waybar.hidden {
   background-color: #181825;
   border-radius: 10px;
   padding: 0px 10px;
-  margin: 3px 1px;
+  margin: 1px 1px;
   font-size: 13px;
   transition: all 0.3s ease;
 }
@@ -51,7 +51,7 @@ window#waybar.hidden {
   background-color: #181825;
   border-radius: 10px;
   padding: 0px 0px;
-  margin: 3px 1px;
+  margin: 1px 1px;
   font-size: 13px;
   transition: all 0.3s ease;
 }
@@ -62,7 +62,7 @@ tooltip {
   background-color: #1e222a;
   border-radius: 10px;
   padding: 0px 10px;
-  margin: 3px 1px;
+  margin: 1px 1px;
   font-size: 13px;
 }
 
@@ -86,11 +86,11 @@ tooltip {
 
 #workspaces button label {
   color: #b4befe;
-  padding: 0 12px;
+  padding: 0 4px;
 }
 
 #workspaces button {
-  padding: 0px 12px;
+  padding: 0px 4px;
   border-radius: 8px;
   background: transparent;
   min-width: 0px;
@@ -108,7 +108,7 @@ tooltip {
 #workspaces button.focused {
   background-color: #b4befe;
   border-radius: 10px;
-  padding: 0 12px;
+  padding: 0 7px;
   font-weight: bold;
 }
 
@@ -134,7 +134,7 @@ tooltip {
   background-color: #181825;
   border-radius: 10px;
   padding: 0px 8px;
-  margin: 3px 1px;
+  margin: 1px 1px;
   font-size: 13px;
   transition: 0.3s ease;
 }
@@ -160,7 +160,7 @@ tooltip {
   background-color: #1d1e33;
   border-radius: 10px;
   padding: 0px 0px;
-  margin: 0px 3px;
+  margin: 1px 3px;
   font-size: 13px;
   transition: all 0.3s ease;
 }
@@ -176,7 +176,7 @@ tooltip {
   background-color: #181825;
   border-radius: 10px;
   padding: 0px 8px;
-  margin: 3px 1px;
+  margin: 1px 1px;
   font-size: 13px;
   transition: 0.3s ease;
 }
@@ -190,7 +190,7 @@ tooltip {
   background-color: #181825;
   border-radius: 10px;
   padding: 0px 12px;
-  margin: 3px 3px;
+  margin: 1px 3px;
   font-size: 13px;
   font-weight: 500;
   transition: 0.3s ease;
@@ -207,7 +207,7 @@ tooltip {
   background-color: #181825;
   border-radius: 10px;
   padding: 0px 8px;
-  margin: 3px 1px;
+  margin: 1px 1px;
   font-size: 13px;
   transition: 0.3s ease;
 }

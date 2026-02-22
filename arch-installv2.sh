@@ -11,8 +11,7 @@ PKGS_PACMAN=(
     gtklock-powerbar-module gtklock-playerctl-module alacritty cliphist
     wlsunset qt5ct qt6ct qt6-wayland qt5-wayland kvantum kvantum-qt5
     ttf-roboto ttf-fira-code ttf-firacode-nerd micro gnome-calendar pavucontrol
-    blueman networkmanager network-manager-applet thunar nwg-look timeshift
-    obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty
+    blueman networkmanager network-manager-applet thunar nwg-look obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty
     ripgrep eza  wl-clipboard dconf niri mate-polkit sddm
 )
 

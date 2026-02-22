@@ -183,10 +183,10 @@ binds {
 // ────────────── Автозапуск приложений ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
-    spawn-sh-at-startup "/usr/libexec/mate-authentication-agent-1 &" // Polkit
+    spawn-sh-at-startup "/usr/lib64/mate-polkit/polkit-mate-authentication-agent-1 &" // Polkit
     //spawn-sh-at-startup "swww-daemon" // Демон обоев
-    spawn-sh-at-startup "swaybg -i ~/Pictures/wallpaper/bqogmi642yqf1.png" // Установить обои
-    //spawn-sh-at-startup "/home/borrow/.config/waybar/scripts/random_walpap.sh" // Рандомные обои, каждые 2 часа
+    // spawn-sh-at-startup "swaybg -i ~/Pictures/wallpaper/bqogmi642yqf1.png" // Установить обои
+    spawn-sh-at-startup "/home/borrow/.config/waybar/scripts/random_walpap.sh" // Рандомные обои, каждые 2 часа
     spawn-sh-at-startup "waybar" // Запустить Waybar
     spawn-sh-at-startup "v2rayn" //vpn
     spawn-sh-at-startup "/usr/lib/xdg-desktop-portal-gtk"
@@ -286,10 +286,10 @@ binds {
     // 🚀 Правило для основного окна Telegram (Плавающий и Размер 1007x696)
     window-rule {
         match app-id="org.telegram.desktop"
-        open-floating true // Плавающий режим
+        open-floating false // Плавающий режим
         //Задаем желаемый размер 1007x696 пикселей
-        default-column-width { fixed 1007; }
-        default-window-height { fixed 696; }
+        // default-column-width { fixed 1007; }
+        // default-window-height { fixed 696; }
     }
 
     // 🌐 Правило для Yandex Browser (Тайлинг, Фиксированный размер)
