@@ -13,7 +13,7 @@ PKGS_PACMAN=(
     ttf-roboto ttf-fira-code ttf-firacode-nerd micro gnome-calendar pavucontrol
     blueman networkmanager network-manager-applet thunar nwg-look timeshift
     obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty
-    ripgrep eza  wl-clipboard dconf niri mate-polkit 
+    ripgrep eza  wl-clipboard dconf niri mate-polkit sddm
 )
 
 # AUR пакеты
@@ -51,6 +51,10 @@ fi
 # 3. Установка AUR
 info "Устанавливаю AUR-пакеты..."
 $AUR_HELPER -S --needed --noconfirm "${PKGS_AUR[@]}"
+
+# 3.5 Включаем SDDM как дефолтный дисплей-менеджер
+info "Включаю SDDM по умолчанию..."
+sudo systemctl enable sddm
 
 # 4. Симлинки ~/.config (теперь и папки, и файлы)
 info "Создаю симлинки для ~/.config..."
