@@ -84,10 +84,10 @@ sudo apt-get install waybar wofi mako gtklock gtklock-powerbar-module gtklock-pl
 ## Нужный мне софт
 Arch
 ```bash
-sudo pacman -s micro gnome-calendar pavucontrol blueman networkmanager network-manager-applet thunar nwg-look timeshift Kvantum obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty ripgrep eza
+sudo pacman -s micro gnome-calendar pavucontrol blueman networkmanager network-manager-applet thunar nwg-look timeshift kvantum obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty ripgrep eza
 ```
 ```bash
-yay -S v2rayn portprton yandex-browser geany-themes 
+yay -S v2rayn portproton yandex-browser geany-themes 
 ```
 Alt
 ```bash
