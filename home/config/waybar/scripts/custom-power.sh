@@ -1,6 +1,6 @@
 #!/bin/bash
 options="Shutdown\nReboot\nLogout\nSuspend\nHibernate\nLock\nExit"
-chosen=$(echo -e "$options" | wofi --dmenu --prompt "Power Menu" --width 300 --height 234)
+chosen=$(echo -e "$options" | wofi --dmenu --prompt "Power Menu" --width 300 --height 247)
 
 case $chosen in
   "Shutdown") systemctl poweroff ;;
