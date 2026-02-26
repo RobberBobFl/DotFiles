@@ -7,8 +7,12 @@
 ![](Screenshots/3.png)
 
  </details>
- 
-## Установка
+## Автоустановка только для Arch
+Запустить скрипт
+```bash
+sh arch-installv2.sh
+ ```
+## Установка в ручную
 ```bash
 git clone https://github.com/RobberBobFl/DotFiles.git
 ```
@@ -26,7 +30,7 @@ mkdir -p ~/Pictures/wallpaper
 cp ~/DotFiles/wallpaper/* ~/Pictures/wallpaper/
 ```
 
-Темы, курсор, иконки поставить в nwg-look и в Kvantum для qt
+Темы, курсор, иконки поставить в nwg-look и в kvantum для qt
 
 Приминить тёмную тему для libadwaita
 ```bash
@@ -84,7 +88,7 @@ sudo apt-get install waybar wofi mako gtklock gtklock-powerbar-module gtklock-pl
 ## Нужный мне софт
 Arch
 ```bash
-sudo pacman -s micro gnome-calendar pavucontrol blueman networkmanager network-manager-applet thunar nwg-look timeshift kvantum obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty ripgrep eza
+sudo pacman -s micro gsimplecal pavucontrol blueman networkmanager network-manager-applet thunar nwg-look timeshift kvantum obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty ripgrep eza
 ```
 ```bash
 yay -S v2rayn portproton yandex-browser geany-themes 
@@ -96,12 +100,3 @@ sudo apt-get install micro gnome-calendar pavucontrol blueman NetworkManager Net
 ```bash
 epm play yandex-browser v2rayn
 ```
-## Аналоги без `libadwaita`
-
-
-|                  | GTK3                        | QT6                         |
-| ---------------- | --------------------------- | --------------------------- |
-| Gnome-calculator | qalculate-gtk<br>Galculator | qalculate-qt<br>SpeedCrunch |
-| Nautilus         | Thunar                      | PCManFM-Qt                  |
-| Gedit            | Pluma<br>Geany              | FeatherPad                  |
-| Gnome-calendar   | Planify<br>California<br>Orage<br>DateTime | Kalendar<br>QOwnNotes<br>Morgen(electron)<br>Focalboard(electron) |

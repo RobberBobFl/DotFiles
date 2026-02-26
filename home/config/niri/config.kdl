@@ -8,7 +8,7 @@ input {
         xkb {
             layout "us,ru" // Использовать раскладку клавиатуры US и RU
 	    // variant "," // 
-	    options "grp:alt_shift_toggle,ctrl:swapcaps" // Переключение раскладки Alt+Shift
+	    options "grp:alt_shift_toggle" // Переключение раскладки Alt+Shift
         }
         numlock // Включить NumLock при старте
     }
@@ -316,11 +316,11 @@ binds {
         
     // 🎧 Правило для календаря (Фиксированный размер и позиция)
     window-rule {
-        match app-id="org.gnome.Calendar"
+        match app-id="gsimplecal"
         open-floating true // Активируем плавающий режим
         // Задаем точный размер 437x600 пикселей
-        default-column-width { fixed 437; }
-        default-window-height { fixed 600; }
+        // default-column-width { fixed 437; }
+        // default-window-height { fixed 600; }
         // Устанавливаем позицию 1424, 47 относительно нижнего правого угла экрана
         default-floating-position x=32 y=32 relative-to="bottom-right"
         }

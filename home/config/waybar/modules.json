@@ -105,7 +105,7 @@
     "format-alt": "{0:L%A}\n{0:L%d %B}",
     "tooltip": false,
     "max-leght": 50,
-    "on-click-right": "bash -c 'gnome-calendar'"
+    "on-click-right": "bash -c 'gsimplecal'"
 },
 
   "niri/language": {

@@ -6,13 +6,13 @@ DOT_DIR="$HOME/DotFiles"
 
 # Официальные пакеты
 PKGS_PACMAN=(
-    fish xdg-desktop-portal-gtk xdg-desktop-portal-gnome 
+    fish gnome-calculator xdg-desktop-portal-gtk xdg-desktop-portal-gnome 
     gnome-keyring xwayland-satellite waybar wofi mako gtklock
     gtklock-powerbar-module gtklock-playerctl-module alacritty cliphist
     wlsunset qt5ct qt6ct qt6-wayland qt5-wayland kvantum kvantum-qt5
-    ttf-roboto ttf-fira-code ttf-firacode-nerd micro gnome-calendar pavucontrol
+    ttf-roboto ttf-fira-code ttf-firacode-nerd micro gsimplecal pavucontrol
     blueman networkmanager network-manager-applet thunar nwg-look obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty
-    ripgrep eza  wl-clipboard dconf niri mate-polkit sddm
+    ripgrep eza  wl-clipboard dconf niri mate-polkit sddm keyd
 )
 
 # AUR пакеты
@@ -54,6 +54,17 @@ $AUR_HELPER -S --needed --noconfirm "${PKGS_AUR[@]}"
 # 3.5 Включаем SDDM как дефолтный дисплей-менеджер
 info "Включаю SDDM по умолчанию..."
 sudo systemctl enable sddm
+
+# 3.6 Настройка keyd (системный ремаппер)
+info "Настраиваю keyd..."
+if [ -f "$DOT_DIR/default.conf" ]; then
+    sudo mkdir -p /etc/keyd
+    sudo cp "$DOT_DIR/default.conf" /etc/keyd/default.conf
+    sudo systemctl enable --now keyd
+    info "keyd настроен и запущен."
+else
+    warn "Файл $DOT_DIR/default.conf не найден, пропускаю настройку keyd."
+fi
 
 # 4. Симлинки ~/.config (теперь и папки, и файлы)
 info "Создаю симлинки для ~/.config..."
