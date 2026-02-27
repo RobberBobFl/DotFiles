@@ -7,11 +7,13 @@
 ![](Screenshots/3.png)
 
  </details>
+
 ## Автоустановка только для Arch
 Запустить скрипт
+
 ```bash
 sh arch-installv2.sh
- ```
+```
 ## Установка в ручную
 ```bash
 git clone https://github.com/RobberBobFl/DotFiles.git

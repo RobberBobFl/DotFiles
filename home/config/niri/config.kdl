@@ -283,25 +283,16 @@ binds {
         geometry-corner-radius 4 // Установить радиус всех окон в 4
         clip-to-geometry true
     }
-    // 🚀 Правило для основного окна Telegram (Плавающий и Размер 1007x696)
+    // 🚀 Правило для основного окна Telegram 
     window-rule {
         match app-id="org.telegram.desktop"
-        open-floating false // Плавающий режим
-        //Задаем желаемый размер 1007x696 пикселей
-        // default-column-width { fixed 1007; }
-        // default-window-height { fixed 696; }
+        open-floating false
     }
 
-    // 🌐 Правило для Yandex Browser (Тайлинг, Фиксированный размер)
+    // 🌐 Правило для Yandex Browser 
     window-rule {
         match app-id="Yandex-browser"
         open-maximized-to-edges true
-        // open-floating false // Необязательно, так как тайлинг - это режим по умолчанию
-        // Задаем желаемый размер 1902x1014 пикселей.
-        // В режиме тайлинга niri будет пытаться применить этот размер как
-        // предпочтительный для колонки или окна.
-        //default-column-width {proportion 1.0;}
-        // default-window-height { fixed 1014; }
     }
     // 🎧 Правило для Pavucontrol (Фиксированный размер и позиция)
     window-rule {
@@ -318,9 +309,6 @@ binds {
     window-rule {
         match app-id="gsimplecal"
         open-floating true // Активируем плавающий режим
-        // Задаем точный размер 437x600 пикселей
-        // default-column-width { fixed 437; }
-        // default-window-height { fixed 600; }
         // Устанавливаем позицию 1424, 47 относительно нижнего правого угла экрана
         default-floating-position x=32 y=32 relative-to="bottom-right"
         }
