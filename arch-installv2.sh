@@ -12,12 +12,12 @@ PKGS_PACMAN=(
     wlsunset qt5ct qt6ct qt6-wayland qt5-wayland kvantum kvantum-qt5
     ttf-roboto ttf-fira-code ttf-firacode-nerd micro gsimplecal pavucontrol
     blueman networkmanager network-manager-applet thunar nwg-look obsidian qbittorrent nodejs npm neovim geany yazi git mangohud kitty
-    ripgrep eza  wl-clipboard dconf niri mate-polkit sddm keyd
+    ripgrep eza  wl-clipboard dconf niri mate-polkit sddm keyd celluloid imv xarchiver xfce4-settings gvfs-mtp gvfs-afc libmtp tumbler nvtop
 )
 
 # AUR пакеты
 PKGS_AUR=(
-     awww wlogout v2rayn portproton yandex-browser geany-themes xdg-terminal-exec
+     awww wlogout v2rayn portproton yandex-browser geany-themes xdg-terminal-exec ayugram-desktop
 )
 
 # --- ФУНКЦИИ ---

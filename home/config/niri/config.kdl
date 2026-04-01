@@ -25,6 +25,11 @@ input {
     focus-follows-mouse // Фокус на окне под курсором
     workspace-auto-back-and-forth // Переключение рабочих столов туда и обратно
 }
+gestures {
+    hot-corners {
+        top-left
+    }
+}
 
 // ────────────── Настройка вывода ──────────────
 // Можно выполнить `niri msg outputs`, чтобы получить корректные имена дисплеев.
@@ -48,7 +53,7 @@ binds {
     MOD+B                               hotkey-overlay-title="Открыть браузер: yandex" { spawn-sh "yandex-browser-stable"; }
     MOD+ALT+L                           hotkey-overlay-title="Блокировка экрана: gtklock" { spawn-sh "gtklock"; }
     MOD+V                               hotkey-overlay-title="Clipboard history" { spawn-sh "cliphist list | wofi --dmenu | cliphist decode | wl-copy"; }
-    MOD+SHIFT+T                         hotkey-overlay-title="Telegram"          { spawn-sh "Telegram";}
+    MOD+SHIFT+T                         hotkey-overlay-title="Telegram"          { spawn-sh "AyuGram";}
     // Выбери свой файловый менеджер
     MOD+E                             hotkey-overlay-title="Файловый менеджер: thunar" { spawn-sh "thunar"; }
 
@@ -284,16 +289,18 @@ binds {
         clip-to-geometry true
     }
     // 🚀 Правило для основного окна Telegram 
-    window-rule {
-        match app-id="org.telegram.desktop"
-        open-floating false
-    }
+window-rule {
+    match app-id="^com.ayugram.desktop$" title="Просмотр медиа"
+    open-floating true
+    open-fullscreen false
+}
 
     // 🌐 Правило для Yandex Browser 
     window-rule {
         match app-id="Yandex-browser"
         open-maximized-to-edges true
     }
+
     // 🎧 Правило для Pavucontrol (Фиксированный размер и позиция)
     window-rule {
         match app-id="org.pulseaudio.pavucontrol"  
