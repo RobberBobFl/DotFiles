@@ -117,7 +117,9 @@ binds {
 
     // ─── Переключение рабочих столов ───
     MOD+WHEELSCROLLDOWN                 cooldown-ms=150 { focus-workspace-down; }
+    MOD+K                 cooldown-ms=150 { focus-workspace-down; }
     MOD+WHEELSCROLLUP                   cooldown-ms=150 { focus-workspace-up; }
+    MOD+L                   cooldown-ms=150 { focus-workspace-up; }
     MOD+CTRL+WHEELSCROLLDOWN            cooldown-ms=150 { move-column-to-workspace-down; }
     MOD+CTRL+WHEELSCROLLUP              cooldown-ms=150 { move-column-to-workspace-up; }
 
@@ -195,7 +197,6 @@ binds {
     spawn-sh-at-startup "waybar" // Запустить Waybar
     spawn-sh-at-startup "v2rayn" //vpn
     spawn-sh-at-startup "/usr/lib/xdg-desktop-portal-gtk"
-    spawn-sh-at-startup "/usr/lib/xdg-desktop-portal-gnome"
     spawn-sh-at-startup "wl-paste --watch cliphist store" // Копирка
     spawn-sh-at-startup "wlsunset -S 07:00 -s 20:00 -t 3500 -T 6500 -d 0" // Ночной режим(Жёлтый цвет)
     prefer-no-csd // Отключить декорации программы

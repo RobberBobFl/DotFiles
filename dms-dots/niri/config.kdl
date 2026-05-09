@@ -1,0 +1,186 @@
+// Настройки ввода из твоего конфига 
+input {
+    keyboard {
+        xkb {
+            layout "us,ru"
+            options "grp:alt_shift_toggle" 
+        }
+        numlock 
+    }
+
+    mouse {
+        accel-profile "flat" 
+    }
+
+    touchpad {
+        tap 
+        natural-scroll 
+    }
+
+    focus-follows-mouse max-scroll-amount="0%"
+    workspace-auto-back-and-forth 
+}
+
+gestures {
+    hot-corners {
+        top-left 
+    }
+}
+
+// ────────────── Настройки компоновки ──────────────
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
+
+    layout {
+        gaps 2 // Отступы между окнами
+        center-focused-column "never" // Не центрировать автоматически фокусируемую колонку
+        always-center-single-column
+        background-color "transparent"
+        preset-column-widths {
+            proportion 0.5
+            proportion 0.33333
+            proportion 0.66667
+        }
+
+        default-column-width { proportion 0.5; }
+
+        preset-window-heights { 
+            proportion 1.0
+        }
+
+        focus-ring {
+            width 1.5
+            active-color "#b4befe"
+            inactive-color "#505050"
+        }
+
+        shadow {
+            softness 30
+            spread 5
+            offset x=0 y=5
+            color "#0007"
+        }
+
+        struts {}
+    }
+
+
+
+// Настройки уведомлений и анимации из dms 
+config-notification {
+    disable-failed 
+}
+
+    animations {
+        workspace-switch {
+            spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+        }
+        window-open {
+            duration-ms 200
+            curve "ease-out-quad"
+        }
+        window-close {
+            duration-ms 200
+            curve "ease-out-cubic"
+        }
+        horizontal-view-movement {
+            spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+        }
+        window-movement {
+            spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
+        }
+        window-resize {
+            spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
+        }
+        config-notification-open-close {
+            spring damping-ratio=0.6 stiffness=1200 epsilon=0.001
+        }
+        screenshot-ui-open {
+            duration-ms 300
+            curve "ease-out-quad"
+        }
+        overview-open-close {
+            spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
+        }
+    }
+
+// Твой автозапуск + системный dms 
+spawn-sh-at-startup "dms run" 
+//spawn-sh-at-startup "/usr/lib64/mate-polkit/polkit-mate-authentication-agent-1 &" 
+spawn-sh-at-startup "v2rayn" 
+spawn-sh-at-startup "/usr/lib/xdg-desktop-portal-gtk"
+spawn-sh-at-startup "wlsunset -S 07:00 -s 20:00 -t 3500 -T 6500 -d 0"
+
+prefer-no-csd 
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png" 
+
+// Твои правила окон 
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$" 
+    open-floating true 
+}
+window-rule {
+    match app-id="thunar" title=r#"^Переименовать"# 
+    open-floating true 
+}
+window-rule {
+    geometry-corner-radius 4 
+    clip-to-geometry true 
+}
+window-rule {
+    match app-id="^org.telegram.desktop._7396f991003af3b29715b6771f631b39$" title="Просмотр медиа"
+    open-floating true
+    open-fullscreen false
+}
+window-rule {
+    match app-id="Yandex-browser" 
+    open-maximized-to-edges true 
+}
+window-rule {
+    match app-id="org.pulseaudio.pavucontrol" 
+    open-floating true 
+    default-column-width { fixed 452; } 
+    default-window-height { fixed 685; } 
+    default-floating-position x=32 y=32 relative-to="bottom-right" 
+}
+window-rule {
+    match app-id="gsimplecal" 
+    open-floating true 
+    default-floating-position x=32 y=32 relative-to="bottom-right" 
+}
+window-rule {
+    match app-id="blueman-manager" 
+    open-floating true 
+    default-column-width { fixed 545; } 
+    default-window-height { fixed 307; } 
+    default-floating-position x=32 y=32 relative-to="bottom-right" 
+}
+
+// Твои переменные окружения 
+environment {
+    ELECTRON_OZONE_PLATFORM_HINT "auto" 
+    QT_QPA_PLATFORM "wayland" 
+    QT_QPA_PLATFORMTHEME "qt6ct"
+    QT_QPA_PLATFORMTHEME_QT6 "qt6ct"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "1" 
+    XDG_SESSION_TYPE "wayland" 
+    XDG_CURRENT_DESKTOP "niri" 
+    XDG_TERMINAL_EXEC "kitty" 
+    TERMINAL "kitty" 
+}
+
+hotkey-overlay {
+    skip-at-startup 
+}
+
+// Оставляем только те инклюды, которые ты не просил убрать
+include "dms/alttab.kdl" 
+//include "dms/colors.kdl"
+include "dms/cursor.kdl"
+//include "dms/layout.kdl" 
+include "dms/outputs.kdl" 
+include "dms/windowrules.kdl"
+include "dms/wpblur.kdl" 
+include "dms/binds.kdl" 
+debug {
+    honor-xdg-activation-with-invalid-serial 
+}

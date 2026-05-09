@@ -1,0 +1,193 @@
+binds {
+
+    // ═══════════════════════════════════════
+    // 🔥 ОСНОВНОЕ / СИСТЕМА
+    // ═══════════════════════════════════════
+
+    MOD+SHIFT+ESCAPE { show-hotkey-overlay; } // Показать все хоткеи
+
+    MOD+ESCAPE allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; } // Аварийный сброс захвата клавиатуры
+    CTRL+ALT+DELETE { quit; } // Выход из Niri
+
+    MOD+SHIFT+P { power-off-monitors; } // Выключить экраны
+    MOD+ALT+L { spawn "dms" "ipc" "call" "lock" "lock"; }   // Блокировка экрана
+
+    XF86PowerOff allow-when-locked=true { spawn-sh "~/.config/waybar/scripts/custom-power.sh"; } // Меню питания
+
+
+    // ═══════════════════════════════════════
+    // 🚀 ЗАПУСК ПРИЛОЖЕНИЙ
+    // ═══════════════════════════════════════
+
+    MOD+RETURN { spawn-sh "kitty"; } // Терминал
+    MOD+B { spawn-sh "yandex-browser-stable"; } // Браузер
+    MOD+E { spawn-sh "thunar"; } // Файловый менеджер
+    MOD+SHIFT+T { spawn "/home/borrow/Telegram/Telegram"; } // Telegram
+
+    // 📦 DMS Launcher (вместо wofi)
+    MOD+SPACE { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
+
+    // 📋 Буфер обмена (твой вариант)
+    MOD+V { spawn "dms" "ipc" "call" "clipboard" "toggle"; }
+
+
+    // ═══════════════════════════════════════
+    // ⚡ DMS ФУНКЦИИ (виджеты / панели)
+    // ═══════════════════════════════════════
+
+    MOD+M { spawn "dms" "ipc" "call" "processlist" "focusOrToggle"; } // Список процессов
+    MOD+N { spawn "dms" "ipc" "call" "notifications" "toggle"; }     // Уведомления
+    MOD+SHIFT+N { spawn "dms" "ipc" "call" "notepad" "toggle"; }     // Быстрые заметки
+    MOD+Y { spawn "dms" "ipc" "call" "dankdash" "wallpaper"; }       // Смена обоев
+    MOD+X { spawn "dms" "ipc" "call" "powermenu" "toggle"; }         // Меню выключения
+
+    // ═══════════════════════════════════════
+    // 🔊 ЗВУК И МЕДИА
+    // ═══════════════════════════════════════
+
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+    XF86AudioMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+    XF86AudioMicMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+
+    XF86AudioNext allow-when-locked=true { spawn-sh "playerctl next"; }
+    XF86AudioPause allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioPlay allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+    XF86AudioPrev allow-when-locked=true { spawn-sh "playerctl previous"; }
+
+
+    // ═══════════════════════════════════════
+    // 💡 ЯРКОСТЬ И ДОП КЛАВИШИ
+    // ═══════════════════════════════════════
+
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "brightnessctl set +10%"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "brightnessctl set 10%-"; }
+
+    XF86Calculator { spawn "gnome-calculator"; }
+
+
+    // ═══════════════════════════════════════
+    // 🪟 УПРАВЛЕНИЕ ОКНАМИ
+    // ═══════════════════════════════════════
+
+    MOD+Q { close-window; }
+
+    // Фокус
+    MOD+H { focus-column-left; }
+    //MOD+L { focus-column-right; }
+    //MOD+K { focus-window-up; }
+    MOD+J { focus-window-down; }
+
+    // Альтернатива стрелками
+    MOD+LEFT { focus-column-left; }
+    MOD+RIGHT { focus-column-right; }
+    MOD+UP { focus-window-up; }
+    MOD+DOWN { focus-window-down; }
+
+    // Перемещение окон
+    MOD+CTRL+H { move-column-left; }
+    //MOD+CTRL+L { move-column-right; }
+    //MOD+CTRL+K { move-window-up; }
+    MOD+CTRL+J { move-window-down; }
+
+    MOD+CTRL+LEFT { move-column-left; }
+    MOD+CTRL+RIGHT { move-column-right; }
+    MOD+CTRL+UP { move-window-up; }
+    MOD+CTRL+DOWN { move-window-down; }
+
+    // Мониторы
+    MOD+SHIFT+LEFT { focus-monitor-left; }
+    MOD+SHIFT+RIGHT { focus-monitor-right; }
+    MOD+SHIFT+UP { focus-monitor-up; }
+    MOD+SHIFT+DOWN { focus-monitor-down; }
+
+    MOD+SHIFT+CTRL+LEFT { move-column-to-monitor-left; }
+    MOD+SHIFT+CTRL+RIGHT { move-column-to-monitor-right; }
+    MOD+SHIFT+CTRL+UP { move-column-to-monitor-up; }
+    MOD+SHIFT+CTRL+DOWN { move-column-to-monitor-down; }
+
+
+    // ═══════════════════════════════════════
+    // 🧠 WORKSPACES
+    // ═══════════════════════════════════════
+    // ─── Переключение рабочих столов ───
+    MOD+WHEELSCROLLDOWN                 cooldown-ms=150 { focus-workspace-down; }
+    MOD+K                               cooldown-ms=150 { focus-workspace-down; }
+    MOD+WHEELSCROLLUP                   cooldown-ms=150 { focus-workspace-up; }
+    MOD+L                               cooldown-ms=150 { focus-workspace-up; }
+    MOD+CTRL+WHEELSCROLLDOWN            cooldown-ms=150 { move-column-to-workspace-down; }
+    MOD+CTRL+WHEELSCROLLUP              cooldown-ms=150 { move-column-to-workspace-up; }
+    MOD+CTRL+K                          cooldown-ms=150 { move-column-to-workspace-down; }
+    MOD+CTRL+L                          cooldown-ms=150 { move-column-to-workspace-up; }
+
+    MOD+WHEELSCROLLRIGHT                { focus-column-right; }
+    MOD+WHEELSCROLLLEFT                 { focus-column-left; }
+    MOD+CTRL+WHEELSCROLLRIGHT           { move-column-right; }
+    MOD+CTRL+WHEELSCROLLLEFT            { move-column-left; }
+
+    MOD+SHIFT+WHEELSCROLLDOWN           { focus-column-right; }
+    MOD+SHIFT+WHEELSCROLLUP             { focus-column-left; }
+    MOD+CTRL+SHIFT+WHEELSCROLLDOWN      { move-column-right; }
+    MOD+CTRL+SHIFT+WHEELSCROLLUP        { move-column-left; }
+
+    MOD+1 { focus-workspace 1; }
+    MOD+2 { focus-workspace 2; }
+    MOD+3 { focus-workspace 3; }
+    MOD+4 { focus-workspace 4; }
+    MOD+5 { focus-workspace 5; }
+    MOD+6 { focus-workspace 6; }
+    MOD+7 { focus-workspace 7; }
+    MOD+8 { focus-workspace 8; }
+    MOD+9 { focus-workspace 9; }
+
+    MOD+CTRL+1 { move-column-to-workspace 1; }
+    MOD+CTRL+2 { move-column-to-workspace 2; }
+    MOD+CTRL+3 { move-column-to-workspace 3; }
+    MOD+CTRL+4 { move-column-to-workspace 4; }
+    MOD+CTRL+5 { move-column-to-workspace 5; }
+    MOD+CTRL+6 { move-column-to-workspace 6; }
+    MOD+CTRL+7 { move-column-to-workspace 7; }
+    MOD+CTRL+8 { move-column-to-workspace 8; }
+    MOD+CTRL+9 { move-column-to-workspace 9; }
+
+    MOD+TAB { focus-workspace-previous; }
+
+
+    // ═══════════════════════════════════════
+    // 📐 LAYOUT / РАСКЛАДКА
+    // ═══════════════════════════════════════
+
+    MOD+CTRL+F { maximize-window-to-edges; }
+
+    MOD+C { center-column; }
+    MOD+CTRL+C { center-visible-columns; }
+
+    MOD+MINUS { set-column-width "-10%"; }
+    MOD+EQUAL { set-column-width "+10%"; }
+
+    MOD+SHIFT+MINUS { set-window-height "-10%"; }
+    MOD+SHIFT+EQUAL { set-window-height "+10%"; }
+
+    MOD+R { switch-preset-column-width; }
+    MOD+SHIFT+R { switch-preset-window-height; }
+
+
+    // ═══════════════════════════════════════
+    // 🔲 РЕЖИМЫ ОКОН
+    // ═══════════════════════════════════════
+
+    MOD+T { toggle-window-floating; }
+    MOD+F { fullscreen-window; }
+    MOD+W { toggle-column-tabbed-display; }
+
+    MOD+O { toggle-overview; }
+
+
+    // ═══════════════════════════════════════
+    // 📸 СКРИНШОТЫ
+    // ═══════════════════════════════════════
+
+    Print { screenshot; }
+    CTRL+Print { screenshot-screen; }
+    CTRL+ALT+Print { screenshot-window; }
+}
