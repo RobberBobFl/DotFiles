@@ -29,7 +29,7 @@ if [ "$choice" == "1" ]; then
     )
     PKGS_AUR=(
         greetd-dms-greeter-git quickshell-git v2rayn portproton yandex-browser 
-        geany-themes xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
+        geany-themes xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin gowall
     )
 elif [ "$choice" == "2" ]; then
     info "Выбраны QT пакеты."
@@ -47,7 +47,7 @@ elif [ "$choice" == "2" ]; then
     )
     PKGS_AUR=(
         greetd-dms-greeter-git quickshell-git v2rayn portproton yandex-browser 
-        xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
+        xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin gowall
     )
 else
     warn "Ошибка: Нужно выбрать 1 или 2."
