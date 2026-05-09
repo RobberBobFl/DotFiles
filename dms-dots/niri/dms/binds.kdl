@@ -74,9 +74,9 @@ binds {
 
     // Фокус
     MOD+H { focus-column-left; }
-    //MOD+L { focus-column-right; }
+    MOD+L { focus-column-right; }
     //MOD+K { focus-window-up; }
-    MOD+J { focus-window-down; }
+    //MOD+J { focus-window-down; }
 
     // Альтернатива стрелками
     MOD+LEFT { focus-column-left; }
@@ -86,9 +86,9 @@ binds {
 
     // Перемещение окон
     MOD+CTRL+H { move-column-left; }
-    //MOD+CTRL+L { move-column-right; }
+    MOD+CTRL+L { move-column-right; }
     //MOD+CTRL+K { move-window-up; }
-    MOD+CTRL+J { move-window-down; }
+    //MOD+CTRL+J { move-window-down; }
 
     MOD+CTRL+LEFT { move-column-left; }
     MOD+CTRL+RIGHT { move-column-right; }
@@ -112,13 +112,13 @@ binds {
     // ═══════════════════════════════════════
     // ─── Переключение рабочих столов ───
     MOD+WHEELSCROLLDOWN                 cooldown-ms=150 { focus-workspace-down; }
-    MOD+K                               cooldown-ms=150 { focus-workspace-down; }
+    MOD+J                               cooldown-ms=150 { focus-workspace-down; }
     MOD+WHEELSCROLLUP                   cooldown-ms=150 { focus-workspace-up; }
-    MOD+L                               cooldown-ms=150 { focus-workspace-up; }
+    MOD+K                               cooldown-ms=150 { focus-workspace-up; }
     MOD+CTRL+WHEELSCROLLDOWN            cooldown-ms=150 { move-column-to-workspace-down; }
     MOD+CTRL+WHEELSCROLLUP              cooldown-ms=150 { move-column-to-workspace-up; }
-    MOD+CTRL+K                          cooldown-ms=150 { move-column-to-workspace-down; }
-    MOD+CTRL+L                          cooldown-ms=150 { move-column-to-workspace-up; }
+    MOD+CTRL+J                          cooldown-ms=150 { move-column-to-workspace-down; }
+    MOD+CTRL+K                          cooldown-ms=150 { move-column-to-workspace-up; }
 
     MOD+WHEELSCROLLRIGHT                { focus-column-right; }
     MOD+WHEELSCROLLLEFT                 { focus-column-left; }
