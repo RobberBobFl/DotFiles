@@ -1,0 +1,17 @@
+{
+  "dankPomodoroTimer": {
+    "enabled": true,
+    "autoStartBreaks": false,
+    "workDuration": "45",
+    "autoSetDND": true
+  },
+  "breathing": {
+    "enabled": true
+  },
+  "appShortcut": {
+    "enabled": true
+  },
+  "alarmClock": {
+    "enabled": true
+  }
+}
