@@ -20,3 +20,15 @@
         tiled-state true
         draw-border-with-background false
         }
+        layer-rule {
+        match namespace=".*"
+        background-effect {
+        xray false
+        }
+        }
+        layer-rule {
+        match namespace="^dms:bar$"
+        background-effect {
+        xray true
+        }
+        }

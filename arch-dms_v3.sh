@@ -192,8 +192,8 @@ if [[ "$choice" == "1" ]]; then
     )
     PKGS_AUR=(
         greetd-dms-greeter-git quickshell-git v2rayn yandex-browser
-        geany-themes xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin gowall
-        koharu-bin portprotonqt python-pywalfox dms-shell-git
+        geany-themes xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
+        portprotonqt python-pywalfox dms-shell-git
     )
 
 elif [[ "$choice" == "2" ]]; then
@@ -216,8 +216,8 @@ elif [[ "$choice" == "2" ]]; then
     )
     PKGS_AUR=(
         greetd-dms-greeter-git quickshell-git v2rayn yandex-browser
-        xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin gowall
-        koharu-bin portprotonqt python-pywalfox dms-shell-git
+        xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
+        portprotonqt python-pywalfox dms-shell-git
     )
 else
     error "Неверный выбор. Введите 1 или 2."
@@ -228,12 +228,44 @@ fi
 # =============================================================================
 
 info "Обновление системы..."
-# --noconfirm: авто-yes на обычные вопросы
-# --ask=4: спрашивать только при конфликтах файлов
 run_cmd sudo pacman -Syu --noconfirm --ask=4
 
-info "Установка пакетов из репозиториев..."
-run_cmd sudo pacman -S --needed --noconfirm --ask=4 "${PKGS_PACMAN[@]}"
+# --- Фильтрация пакетов: проверяем доступность в репозиториях ---
+info "Проверка доступности пакетов в репозиториях..."
+
+AVAILABLE_PKGS=()
+MISSING_PKGS=()
+
+for pkg in "${PKGS_PACMAN[@]}"; do
+    if pacman -Si "$pkg" &>/dev/null; then
+        AVAILABLE_PKGS+=("$pkg")
+    else
+        MISSING_PKGS+=("$pkg")
+    fi
+done
+
+# Сообщаем о пропущенных пакетах
+if [ ${#MISSING_PKGS[@]} -gt 0 ]; then
+    warn "Следующие пакеты не найдены в репозиториях:"
+    printf '  - %s\n' "${MISSING_PKGS[@]}" >&2
+
+    if [ "$DRY_RUN" = true ]; then
+        echo -e "\e[36m[DRY-RUN]\e[0m Продолжил бы установку без них."
+    else
+        read -rp "Продолжить установку без этих пакетов? [Y/n] " answer
+        if [[ "$answer" =~ ^[Nn] ]]; then
+            error "Установка прервана пользователем."
+        fi
+    fi
+fi
+
+# Устанавливаем только доступные пакеты
+if [ ${#AVAILABLE_PKGS[@]} -gt 0 ]; then
+    info "Установка пакетов из репозиториев..."
+    run_cmd sudo pacman -S --needed --noconfirm --ask=4 "${AVAILABLE_PKGS[@]}"
+else
+    warn "Нет доступных пакетов для установки из репозиториев."
+fi
 
 # =============================================================================
 # --- УСТАНОВКА: AUR HELPER ---
