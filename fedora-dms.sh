@@ -26,6 +26,7 @@ readonly DOT_DIR
 readonly LOG_FILE
 
 SUDO_KEEPALIVE_PID=""
+SUDOERS_TMP=""
 
 # =============================================================================
 # --- ОБРАБОТКА АРГУМЕНТОВ ---
@@ -100,6 +101,22 @@ stop_sudo_keepalive() {
     fi
 }
 
+setup_temp_sudoers() {
+    [ "$DRY_RUN" = true ] && return 0
+    SUDOERS_TMP="/etc/sudoers.d/zz-dms-temp-$$"
+    echo "$REAL_USER ALL=(ALL) NOPASSWD: ALL" > "$SUDOERS_TMP"
+    chmod 0440 "$SUDOERS_TMP"
+    if command -v visudo &>/dev/null; then
+        if ! visudo -cf "$SUDOERS_TMP" >/dev/null 2>&1; then
+            rm -f "$SUDOERS_TMP"
+            SUDOERS_TMP=""
+            warn "Не удалось создать временный sudoers (visudo не прошёл), пароль может потребоваться внутри установщиков."
+            return 1
+        fi
+    fi
+    info "Временно выдан passwordless sudo для $REAL_USER (снимется в конце)."
+}
+
 handle_error() {
     local exit_code=$?
     local line_no=$1
@@ -118,6 +135,10 @@ trap handle_sigint SIGINT SIGTERM
 cleanup() {
     local exit_code=$?
     stop_sudo_keepalive
+    if [[ -n "${SUDOERS_TMP:-}" ]]; then
+        rm -f "$SUDOERS_TMP" 2>/dev/null || true
+        info "Временный passwordless sudo снят."
+    fi
     show_usage_hint
 
     echo >&2
@@ -149,6 +170,8 @@ exec > >(tee -a "$LOG_FILE") 2>&1
 if [ "$(id -u)" -ne 0 ]; then
     error "Этот скрипт нужно запускать с правами root: sudo $0"
 fi
+
+setup_temp_sudoers || true
 
 if ! command -v dnf &>/dev/null; then
     error "Этот скрипт предназначен только для Fedora (dnf не найден)."
