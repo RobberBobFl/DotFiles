@@ -327,6 +327,10 @@ cd /
 rm -rf "$TEMP_DIR"
 DMSINSTALL
 }
+
+info "Подготовка зависимостей DMS (golang-bin и т.п., чтобы dankinstall не звал sudo)..."
+run_cmd sudo dnf install -y golang-bin git gcc make tar unzip
+
 install_dms
 
 # =============================================================================
@@ -337,16 +341,8 @@ info "Установка portprotonqt (COPR boria138/portproton)..."
 run_cmd sudo dnf copr enable -y boria138/portproton
 run_cmd sudo dnf install -y portproton
 
-install_nwglook_copr() {
-    info "Установка nwg-look (COPR solopasha/hyprland)..."
-    if [ "$DRY_RUN" = true ]; then
-        echo -e "\e[36m[DRY-RUN]\e[0m Подключил бы COPR solopasha/hyprland и установил nwg-look"
-        return
-    fi
-    run_cmd sudo dnf copr enable -y solopasha/hyprland
-    run_cmd sudo dnf install -y nwg-look
-}
-install_nwglook_copr
+info "Установка Gearlever (Flatpak)..."
+run_cmd sudo flatpak install -y flathub it.mijorus.gearlever
 
 info "Установка opencode..."
 run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://opencode.ai/install | bash'
@@ -521,5 +517,6 @@ echo "  - v2rayn         : https://github.com/2dust/v2rayN/releases"
 echo "  - Obsidian       : https://github.com/obsidianmd/obsidian-releases/releases"
 echo "  - Telegram       : https://desktop.telegram.org/"
 echo "  - Heroic Games   : https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases"
+echo "  - LM Studio      : https://lmstudio.ai/"
 
 # cleanup() вызовется автоматически через trap
