@@ -200,10 +200,10 @@ info "Geoblock-фикс применён. Продолжаем установк�
 
 PKGS=(
     dolphin kate ark kcalc plasma-breeze
-    adw-gtk3-theme la-capitaine-cursor-theme
+    adw-gtk3-theme
     ddcutil i2c-tools fish
     xdg-desktop-portal-kde xwayland-satellite alacritty cliphist wlsunset
-    qt6-wayland qt5-wayland kvantum qt6ct qt5ct
+    qt6-qtwayland qt5-qtwayland kvantum qt6ct qt5ct
     google-roboto-fonts fira-code-fonts
     micro pavucontrol blueman NetworkManager network-manager-applet
     nwg-look qbittorrent nodejs npm neovim filelight yazi git
@@ -225,7 +225,7 @@ AVAILABLE_PKGS=()
 MISSING_PKGS=()
 
 for pkg in "${PKGS[@]}"; do
-    if dnf repoquery --available --quiet "$pkg" &>/dev/null; then
+    if dnf repoquery --available --quiet "name:$pkg" &>/dev/null; then
         AVAILABLE_PKGS+=("$pkg")
     else
         MISSING_PKGS+=("$pkg")
@@ -248,7 +248,7 @@ fi
 
 if [ ${#AVAILABLE_PKGS[@]} -gt 0 ]; then
     info "Установка пакетов из репозиториев..."
-    run_cmd sudo dnf install -y "${AVAILABLE_PKGS[@]}"
+    run_cmd sudo dnf install -y --skip-unavailable "${AVAILABLE_PKGS[@]}"
 else
     warn "Нет доступных пакетов для установки из репозиториев."
 fi
@@ -267,11 +267,11 @@ build_keyd() {
     git clone https://github.com/rvaiya/keyd /tmp/keyd
     (cd /tmp/keyd && make && sudo make install)
     sudo mkdir -p /etc/keyd
-    if [ -f "$USER_HOME/DotFiles/default.conf" ]; then
-        sudo cp "$USER_HOME/DotFiles/default.conf" /etc/keyd/default.conf
-        info "Скопирован конфиг keyd: $USER_HOME/DotFiles/default.conf"
+    if [ -f "$USER_HOME/DotFiles/dms-dots/keyd/default.conf" ]; then
+        sudo cp "$USER_HOME/DotFiles/dms-dots/keyd/default.conf" /etc/keyd/default.conf
+        info "Скопирован конфиг keyd: $USER_HOME/DotFiles/dms-dots/keyd/default.conf"
     else
-        warn "Конфиг keyd не найден ($USER_HOME/DotFiles/default.conf), пропускаю."
+        warn "Конфиг keyd не найден ($USER_HOME/DotFiles/dms-dots/keyd/default.conf), пропускаю."
     fi
     sudo systemctl enable --now keyd
     rm -rf /tmp/keyd
