@@ -211,7 +211,7 @@ PKGS=(
     gnome-keyring imv mpv nvtop kio-extras kio-admin
     gvfs-mtp gvfs-afc libmtp ffmpegthumbs kdegraphics-thumbnailers
     gnome-disk-utility fuse ncdu socat xdg-desktop-portal-wlr gparted
-    xdg-terminal-exec matugen quickshell obs-studio
+    xdg-terminal-exec obs-studio
     make gcc python3-pip
 )
 
@@ -328,8 +328,11 @@ rm -rf "$TEMP_DIR"
 DMSINSTALL
 }
 
-info "Подготовка зависимостей DMS (golang-bin и т.п., чтобы dankinstall не звал sudo)..."
+info "Подготовка зависимостей DMS (COPR + пакеты, чтобы dankinstall не звал sudo)..."
+run_cmd sudo dnf copr enable -y avengemedia/danklinux
+run_cmd sudo dnf copr enable -y avengemedia/dms
 run_cmd sudo dnf install -y golang-bin git gcc make tar unzip
+run_cmd sudo dnf install -y dms dms-greeter quickshell-git matugen cliphist danksearch dgop dankcalendar-git ghostty
 
 install_dms
 
