@@ -186,7 +186,13 @@ fi
 
 info "Подключение Flathub (remote only)..."
 run_cmd sudo dnf install -y flatpak
-run_cmd sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+if ! flatpak remotes 2>/dev/null | grep -qi flathub; then
+    info "Добавление Flathub remote (без интерактивного промпта)..."
+    yes | run_cmd sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+else
+    info "Flathub уже подключён, пропускаю."
+fi
+info "Geoblock-фикс применён. Продолжаем установку пакетов..."
 
 # =============================================================================
 # --- ШАГ 1: DNF-ПАКЕТЫ (QT-НАБОР) ---
@@ -326,7 +332,7 @@ install_dms
 # =============================================================================
 
 info "Установка portprotonqt (COPR boria138/portproton)..."
-run_cmd sudo dnf copr enable boria138/portproton
+run_cmd sudo dnf copr enable -y boria138/portproton
 run_cmd sudo dnf install -y portproton
 
 info "Установка opencode..."
