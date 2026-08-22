@@ -188,7 +188,7 @@ info "Подключение Flathub (remote only)..."
 run_cmd sudo dnf install -y flatpak
 if ! flatpak remotes 2>/dev/null | grep -qi flathub; then
     info "Добавление Flathub remote (без интерактивного промпта)..."
-    yes | run_cmd sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    ( set +o pipefail; yes | run_cmd sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo ) || true
 else
     info "Flathub уже подключён, пропускаю."
 fi
