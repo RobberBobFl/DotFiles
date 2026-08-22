@@ -267,11 +267,11 @@ build_keyd() {
     git clone https://github.com/rvaiya/keyd /tmp/keyd
     (cd /tmp/keyd && make && sudo make install)
     sudo mkdir -p /etc/keyd
-    if [ -f "$USER_HOME/DotFiles/dms-dots/keyd/default.conf" ]; then
-        sudo cp "$USER_HOME/DotFiles/dms-dots/keyd/default.conf" /etc/keyd/default.conf
-        info "Скопирован конфиг keyd: $USER_HOME/DotFiles/dms-dots/keyd/default.conf"
+    if [ -f "$USER_HOME/DotFiles/default.conf" ]; then
+        sudo cp "$USER_HOME/DotFiles/default.conf" /etc/keyd/default.conf
+        info "Скопирован конфиг keyd: $USER_HOME/DotFiles/default.conf"
     else
-        warn "Конфиг keyd не найден ($USER_HOME/DotFiles/dms-dots/keyd/default.conf), пропускаю."
+        warn "Конфиг keyd не найден ($USER_HOME/DotFiles/default.conf), пропускаю."
     fi
     sudo systemctl enable --now keyd
     rm -rf /tmp/keyd
