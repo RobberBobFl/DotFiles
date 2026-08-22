@@ -239,7 +239,7 @@ if [ ${#MISSING_PKGS[@]} -gt 0 ]; then
     if [ "$DRY_RUN" = true ]; then
         echo -e "\e[36m[DRY-RUN]\e[0m Продолжил бы установку без них."
     else
-        read -rp "Продолжить установку без этих пакетов? [Y/n] " answer
+        read -rp "Продолжить установку без этих пакетов? [Y/n] " answer || answer="Y"
         if [[ "$answer" =~ ^[Nn] ]]; then
             error "Установка прервана пользователем."
         fi
@@ -291,19 +291,7 @@ build_tela() {
 }
 build_tela
 
-build_nwglook() {
-    info "Сборка nwg-look из исходников..."
-    if [ "$DRY_RUN" = true ]; then
-        echo -e "\e[36m[DRY-RUN]\e[0m Клонировал бы nwg-look, собрал (make build) и установил, затем удалил /tmp/nwg-look"
-        return
-    fi
-    run_cmd sudo dnf install -y go gtk3 xcur2png glib2
-    rm -rf /tmp/nwg-look
-    git clone https://github.com/nwg-piotr/nwg-look.git /tmp/nwg-look
-    (cd /tmp/nwg-look && make build && sudo make install)
-    rm -rf /tmp/nwg-look
-}
-build_nwglook
+
 
 # =============================================================================
 # --- ШАГ 3: DMS (официальный инсталлер dankinstall, от имени пользователя) ---
@@ -349,6 +337,17 @@ info "Установка portprotonqt (COPR boria138/portproton)..."
 run_cmd sudo dnf copr enable -y boria138/portproton
 run_cmd sudo dnf install -y portproton
 
+install_nwglook_copr() {
+    info "Установка nwg-look (COPR solopasha/hyprland)..."
+    if [ "$DRY_RUN" = true ]; then
+        echo -e "\e[36m[DRY-RUN]\e[0m Подключил бы COPR solopasha/hyprland и установил nwg-look"
+        return
+    fi
+    run_cmd sudo dnf copr enable -y solopasha/hyprland
+    run_cmd sudo dnf install -y nwg-look
+}
+install_nwglook_copr
+
 info "Установка opencode..."
 run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://opencode.ai/install | bash'
 
@@ -362,8 +361,8 @@ run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://pi.dev/install.sh | sh'
 # --- ШАГ 5: PYWALFOX ---
 # =============================================================================
 
-info "Установка python-pywalfox..."
-run_cmd sudo -u "$REAL_USER" python3 -m pip install --user python-pywalfox
+info "Установка pywalfox..."
+run_cmd sudo -u "$REAL_USER" python3 -m pip install --user --break-system-packages pywalfox
 
 PYWALFOX_SRC="$USER_HOME/.cache/wal/dank-pywalfox.json"
 PYWALFOX_DST="$USER_HOME/.cache/wal/colors.json"
