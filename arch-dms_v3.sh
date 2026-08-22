@@ -212,7 +212,6 @@ elif [[ "$choice" == "2" ]]; then
         libmtp ffmpegthumbs kdegraphics-thumbnailers gnome-disk-utility
         heroic-games-launcher-bin
         fuse2 foliate zed obs-studio ncdu socat xdg-desktop-portal-wlr gparted
-        archlinux-xdg-menu
     )
     PKGS_AUR=(
         greetd-dms-greeter-git quickshell-git v2rayn yandex-browser
@@ -432,15 +431,7 @@ fi
 # =============================================================================
 # --- НАСТРОЙКА: СПЕЦИФИЧНЫЕ ДЛЯ QT ---
 # =============================================================================
-
-if [[ "$CHOICE" == "2" ]]; then
-    info "Применение специфичных настроек QT..."
-
-    # 6) Линк arch-applications.menu
-    run_cmd sudo ln -sf /etc/xdg/menus/arch-applications.menu /etc/xdg/menus/applications.menu
-    [ "$DRY_RUN" = false ] && info "Создан линк: arch-applications.menu -> applications.menu"
-
-    # 7) kwriteconfig6: установка alacritty как терминал по умолчанию
+    # 6) kwriteconfig6: установка alacritty как терминал по умолчанию
     if command -v kwriteconfig6 &>/dev/null; then
         run_cmd kwriteconfig6 --file kdeglobals --group General --key TerminalApplication "alacritty"
         [ "$DRY_RUN" = false ] && info "Установлен терминал по умолчанию: alacritty"

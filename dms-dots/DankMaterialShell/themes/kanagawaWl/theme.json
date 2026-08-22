@@ -1,0 +1,129 @@
+{
+  "id": "kanagawaWl",
+  "name": "Kanagawa-wave-lotus",
+  "version": "1.0.0",
+  "author": "wirus",
+  "description": "Kanagawa theme using Lotus for light mode and Wave for dark mode.",
+  "dark": {
+    "primary": "#7fb4ca",
+    "primaryText": "#1f1f28",
+    "primaryContainer": "#223249",
+    "secondary": "#938aa9",
+    "surface": "#1f1f28",
+    "surfaceText": "#dcd7ba",
+    "surfaceVariant": "#2a2a37",
+    "surfaceVariantText": "#c8c093",
+    "surfaceTint": "#7fb4ca",
+    "background": "#16161d",
+    "backgroundText": "#dcd7ba",
+    "outline": "#dcd7ba",
+    "surfaceContainer": "#223249",
+    "surfaceContainerHigh": "#2d4f67",
+    "error": "#e82424",
+    "warning": "#ff9e3b",
+    "info": "#7fb4ca"
+  },
+  "light": {
+    "primary": "#c84053",
+    "primaryText": "#1f1f28",
+    "primaryContainer": "#e98a9e",
+    "secondary": "#6f894e",
+    "surface": "#f2ecbc",
+    "surfaceText": "#1f1f28",
+    "surfaceVariant": "#e4dca3",
+    "surfaceVariantText": "#2a2a37",
+    "surfaceTint": "#c84053",
+    "background": "#f2ecbc",
+    "backgroundText": "#1f1f28",
+    "outline": "#c84053",
+    "surfaceContainer": "#e7dfb1",
+    "surfaceContainerHigh": "#ddd39a",
+    "error": "#c84053",
+    "warning": "#dca561",
+    "info": "#658594"
+  },
+  "wcag": {
+    "level": "fail",
+    "dark": {
+      "level": "fail",
+      "minRatio": 4.71,
+      "worstPair": [
+        "surfaceVariantText",
+        "surfaceContainerHigh"
+      ],
+      "body": {
+        "level": "AA",
+        "minRatio": 4.71,
+        "worstPair": [
+          "surfaceVariantText",
+          "surfaceContainerHigh"
+        ]
+      },
+      "accent": {
+        "level": "AA",
+        "minRatio": 5.73,
+        "worstPair": [
+          "primary",
+          "surfaceContainer"
+        ]
+      },
+      "nonText": {
+        "level": "fail",
+        "minRatio": 2.91,
+        "worstPair": [
+          "error",
+          "surfaceContainer"
+        ]
+      },
+      "breakdown": [
+        {
+          "name": "Dark",
+          "mode": "dark",
+          "level": "fail",
+          "bodyLevel": "AA"
+        }
+      ]
+    },
+    "light": {
+      "level": "fail",
+      "minRatio": 3.36,
+      "worstPair": [
+        "primaryText",
+        "primary"
+      ],
+      "body": {
+        "level": "AAA",
+        "minRatio": 9.33,
+        "worstPair": [
+          "surfaceVariantText",
+          "surfaceContainerHigh"
+        ]
+      },
+      "accent": {
+        "level": "fail",
+        "minRatio": 3.36,
+        "worstPair": [
+          "primaryText",
+          "primary"
+        ]
+      },
+      "nonText": {
+        "level": "fail",
+        "minRatio": 1.62,
+        "worstPair": [
+          "warning",
+          "surfaceContainer"
+        ]
+      },
+      "breakdown": [
+        {
+          "name": "Light",
+          "mode": "light",
+          "level": "fail",
+          "bodyLevel": "AAA"
+        }
+      ]
+    }
+  },
+  "sourceDir": "kanagawa-wl"
+}

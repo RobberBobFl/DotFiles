@@ -80,7 +80,7 @@ binds {
     CTRL+Print { screenshot-screen; }
     Print { screenshot; }
     CTRL+ALT+DELETE { quit; }
-    MOD+B { spawn-sh "yandex-browser-stable"; }
+    MOD+B { spawn "yandex-browser-stable"; }
     MOD+E { spawn "dolphin"; }
     MOD+RETURN { spawn "alacritty"; }
     MOD+SHIFT+T { spawn "/home/borrow/Telegram/Telegram"; }

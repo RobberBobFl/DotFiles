@@ -1,3 +1,5 @@
+/* BEGIN DMS OVERRIDE */
+
 /*
 * GTK Colors
 * Generated with Matugen
@@ -131,7 +133,6 @@
 @define-color content_view_bg @view_bg_color;
 @define-color text_view_bg @view_bg_color;
 * {
-  padding: 0;
   -GtkToolButton-icon-spacing: 4;
   -GtkTextView-error-underline-color: @error_bg_color;
   -GtkScrolledWindow-scrollbar-spacing: 0;
@@ -7804,20 +7805,22 @@ window.background:not(.solid-csd):not(.csd) > notebook > stack:not(:only-child) 
 
 /* Matugen Colors */
 
-@define-color accent_color #b47109;
-@define-color accent_fg_color #f2e5bc;
-@define-color accent_bg_color #b47109;
-@define-color window_bg_color #fbf1c7;
-@define-color window_fg_color #4f3829;
-@define-color headerbar_bg_color #fbf1c7;
-@define-color headerbar_fg_color #4f3829;
-@define-color popover_bg_color #fbf1c7;
-@define-color popover_fg_color #4f3829;
-@define-color view_bg_color #fbf1c7;
-@define-color view_fg_color #4f3829;
-@define-color card_bg_color #fbf1c7;
-@define-color card_fg_color #4f3829;
+@define-color accent_color #40a02b;
+@define-color accent_fg_color #eff1f5;
+@define-color accent_bg_color #40a02b;
+@define-color window_bg_color #eff1f5;
+@define-color window_fg_color #4c4f69;
+@define-color headerbar_bg_color #eff1f5;
+@define-color headerbar_fg_color #4c4f69;
+@define-color popover_bg_color #eff1f5;
+@define-color popover_fg_color #4c4f69;
+@define-color view_bg_color #eff1f5;
+@define-color view_fg_color #4c4f69;
+@define-color card_bg_color #eff1f5;
+@define-color card_fg_color #4c4f69;
 @define-color sidebar_bg_color @window_bg_color;
 @define-color sidebar_fg_color @window_fg_color;
 @define-color sidebar_border_color @window_bg_color;
 @define-color sidebar_backdrop_color @window_bg_color;
+
+/* END DMS OVERRIDE */

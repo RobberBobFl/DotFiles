@@ -105,7 +105,6 @@ config-notification {
 
 // Твой автозапуск + системный dms 
 spawn-sh-at-startup "dms run" 
-spawn-sh-at-startup "bash -c 'XDG_MENU_PREFIX=arch- kbuildsycoca6 --noincremental'" //Для долфина,чтобы открывалось контекстное меню
 //spawn-sh-at-startup "/usr/lib64/mate-polkit/polkit-mate-authentication-agent-1 &" 
 //spawn-sh-at-startup "v2rayn"
 spawn-sh-at-startup "/home/borrow/v2rayN-linux-64/v2rayN"
@@ -167,7 +166,8 @@ environment {
     XDG_SESSION_TYPE "wayland" 
     XDG_CURRENT_DESKTOP "niri" 
     XDG_TERMINAL_EXEC "kitty" 
-    TERMINAL "kitty" 
+    TERMINAL "kitty"
+    XDG_MENU_PREFIX "plasma-"
 }
 
 hotkey-overlay {
