@@ -248,7 +248,7 @@ fi
 
 if [ ${#AVAILABLE_PKGS[@]} -gt 0 ]; then
     info "Установка пакетов из репозиториев..."
-    run_cmd sudo dnf install -y --needed "${AVAILABLE_PKGS[@]}"
+    run_cmd sudo dnf install -y "${AVAILABLE_PKGS[@]}"
 else
     warn "Нет доступных пакетов для установки из репозиториев."
 fi
