@@ -206,7 +206,7 @@ PKGS=(
     qt6-qtwayland qt5-qtwayland kvantum qt6ct qt5ct
     google-roboto-fonts fira-code-fonts
     micro pavucontrol blueman NetworkManager network-manager-applet
-    nwg-look qbittorrent nodejs npm neovim filelight yazi git
+    qbittorrent nodejs npm neovim filelight git
     mangohud kitty ripgrep eza wl-clipboard dconf niri
     gnome-keyring imv mpv nvtop kio-extras kio-admin
     gvfs-mtp gvfs-afc libmtp ffmpegthumbs kdegraphics-thumbnailers
@@ -290,6 +290,20 @@ build_tela() {
     rm -rf /tmp/Tela-circle-icon-theme
 }
 build_tela
+
+build_nwglook() {
+    info "Сборка nwg-look из исходников..."
+    if [ "$DRY_RUN" = true ]; then
+        echo -e "\e[36m[DRY-RUN]\e[0m Клонировал бы nwg-look, собрал (make build) и установил, затем удалил /tmp/nwg-look"
+        return
+    fi
+    run_cmd sudo dnf install -y go gtk3 xcur2png glib2
+    rm -rf /tmp/nwg-look
+    git clone https://github.com/nwg-piotr/nwg-look.git /tmp/nwg-look
+    (cd /tmp/nwg-look && make build && sudo make install)
+    rm -rf /tmp/nwg-look
+}
+build_nwglook
 
 # =============================================================================
 # --- ШАГ 3: DMS (официальный инсталлер dankinstall, от имени пользователя) ---
