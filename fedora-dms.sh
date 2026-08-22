@@ -6,8 +6,12 @@ set -o errtrace
 # FEDORA DOTFILES INSTALLER (QT-only) — порт arch-dms_v3.sh под Fedora
 # =============================================================================
 # Использование:
-#   sudo ./fedora-dms.sh           # обычная установка
-#   sudo ./fedora-dms.sh --dry-run # предпросмотр без изменений
+#   sudo ./fedora-dms.sh                 # обычная установка
+#   sudo ./fedora-dms.sh --dry-run       # предпросмотр без изменений
+#   sudo ./fedora-dms.sh --status        # статус выполненных шагов
+#   sudo ./fedora-dms.sh --list-steps    # список шагов
+#   sudo ./fedora-dms.sh --from flathub  # продолжить с указанного шага
+#   sudo ./fedora-dms.sh --reset         # сбросить state и начать заново
 # =============================================================================
 
 # --- КОНФИГУРАЦИЯ ---
@@ -27,31 +31,6 @@ readonly LOG_FILE
 
 SUDO_KEEPALIVE_PID=""
 SUDOERS_TMP=""
-
-# =============================================================================
-# --- ОБРАБОТКА АРГУМЕНТОВ ---
-# =============================================================================
-WARN_UNKNOWN_ARG=false
-
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        -d|--dry-run)
-            DRY_RUN=true
-            shift
-            ;;
-        *)
-            WARN_UNKNOWN_ARG=true
-            echo -e "\e[33m[WARN]\e[0m Неизвестный аргумент: $1" >&2
-            shift
-            ;;
-    esac
-done
-
-show_usage_hint() {
-    if [ "$WARN_UNKNOWN_ARG" = true ]; then
-        echo -e "\e[33m[WARN]\e[0m Использование: $0 [--dry-run]" >&2
-    fi
-}
 
 # =============================================================================
 # --- ФУНКЦИИ ---
@@ -160,6 +139,148 @@ cleanup() {
 trap cleanup EXIT
 
 # =============================================================================
+# --- STATE & RESUME МЕНЕДЖЕР ---
+# =============================================================================
+STATE_DIR="$USER_HOME/.local/state"
+STATE_FILE="$STATE_DIR/dms-install.state"
+RESUME_MODE=false
+FROM_STEP=""
+RESET_STATE=false
+
+# Упорядоченный массив шагов
+STEPS=(
+    "geoblock"
+    "flathub"
+    "packages"
+    "gitbuilds"
+    "dms_prep"
+    "dms_install"
+    "copr_external"
+    "pywalfox"
+    "symlink"
+    "theme_portals_qt"
+    "shell"
+)
+
+init_state() {
+    if [ "$RESET_STATE" = true ]; then
+        info "Сброс состояния установки..."
+        run_cmd rm -f "$STATE_FILE"
+    fi
+
+    if [ ! -d "$STATE_DIR" ]; then
+        run_cmd mkdir -p "$STATE_DIR"
+        run_cmd chown "$REAL_USER":"$REAL_USER" "$STATE_DIR"
+    fi
+
+    if [ ! -f "$STATE_FILE" ]; then
+        run_cmd touch "$STATE_FILE"
+        run_cmd chown "$REAL_USER":"$REAL_USER" "$STATE_FILE"
+    fi
+}
+
+is_step_done() {
+    local step="$1"
+    grep -qxF "$step" "$STATE_FILE" 2>/dev/null
+}
+
+mark_step_done() {
+    [ "$DRY_RUN" = true ] && return 0
+    local step="$1"
+    if ! is_step_done "$step"; then
+        echo "$step" >> "$STATE_FILE"
+        info "✅ Шаг '$step' успешно завершён и сохранён в state."
+    fi
+}
+
+run_step() {
+    local step_name="$1"
+    local step_func="$2"
+
+    # Если указан --from, пропускаем все шаги до него
+    if [ "$RESUME_MODE" = true ] && [ -n "$FROM_STEP" ]; then
+        if [ "$step_name" != "$FROM_STEP" ]; then
+            return 0
+        else
+            RESUME_MODE=false # Нашли точку старта, дальше выполняем всё
+        fi
+    fi
+
+    if is_step_done "$step_name"; then
+        info "⏭ Шаг '$step_name' уже выполнен ранее. Пропускаю."
+        return 0
+    fi
+
+    info "▶️ Запуск шага: $step_name"
+    if $step_func; then
+        mark_step_done "$step_name"
+    else
+        echo >&2
+        echo -e "\e[31m[ERROR]\e[0m Шаг '$step_name' завершился с ошибкой." >&2
+        echo -e "\e[33m[ПОДСКАЗКА]\e[0m Исправь проблему и перезапусти с этого места:" >&2
+        echo -e "        sudo $0 --from $step_name" >&2
+        exit 1
+    fi
+}
+
+show_status() {
+    echo -e "\e[36m=== Статус установки DMS ===\e[0m"
+    for step in "${STEPS[@]}"; do
+        if is_step_done "$step"; then
+            echo -e "  \e[32m[✓]\e[0m $step"
+        else
+            echo -e "  \e[33m[ ]\e[0m $step"
+        fi
+    done
+    echo -e "\e[36m=========================\e[0m"
+    exit 0
+}
+
+# =============================================================================
+# --- ОБРАБОТКА АРГУМЕНТОВ ---
+# =============================================================================
+WARN_UNKNOWN_ARG=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -d|--dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        --from)
+            RESUME_MODE=true
+            FROM_STEP="$2"
+            if [[ ! " ${STEPS[*]} " =~ " ${FROM_STEP} " ]]; then
+                error "Неизвестный шаг для --from: $FROM_STEP. Доступные: ${STEPS[*]}"
+            fi
+            shift 2
+            ;;
+        --reset)
+            RESET_STATE=true
+            shift
+            ;;
+        --status)
+            show_status
+            ;;
+        --list-steps)
+            echo "Доступные шаги: ${STEPS[*]}"
+            exit 0
+            ;;
+        *)
+            WARN_UNKNOWN_ARG=true
+            echo -e "\e[33m[WARN]\e[0m Неизвестный аргумент: $1" >&2
+            shift
+            ;;
+    esac
+done
+
+show_usage_hint() {
+    if [ "$WARN_UNKNOWN_ARG" = true ]; then
+        echo -e "\e[33m[WARN]\e[0m Использование: $0 [--dry-run] [--from <step>] [--reset] [--status] [--list-steps]" >&2
+    fi
+}
+
+# =============================================================================
 # --- ИНИЦИАЛИЗАЦИЯ ---
 # =============================================================================
 
@@ -192,93 +313,96 @@ if [ "$DRY_RUN" = false ]; then
 fi
 
 # =============================================================================
-# --- ШАГ 0: GEOBLOCK-ФИКС (Cisco openh264 + RPM Fusion + кодеки) ---
+# --- ШАГОВЫЕ ФУНКЦИИ ---
 # =============================================================================
 
-info "Применение geoblock-фикса (fedora-cisco-403-mitigation.sh)..."
+step_geoblock() {
+    info "Применение geoblock-фикса (fedora-cisco-403-mitigation.sh)..."
 
-MITIGATION_URL="https://raw.githubusercontent.com/supertico/fedora-open264-geoblock-fix/main/fedora-cisco-403-mitigation.sh"
-
-if [ "$DRY_RUN" = true ]; then
-    echo -e "\e[36m[DRY-RUN]\e[0m Скачал бы и запустил: $MITIGATION_URL"
-else
-    curl -fsSL "$MITIGATION_URL" -o /tmp/fedora-cisco-403-mitigation.sh
-    bash /tmp/fedora-cisco-403-mitigation.sh
-    rm -f /tmp/fedora-cisco-403-mitigation.sh
-fi
-
-info "Подключение Flathub (remote only)..."
-run_cmd sudo dnf install -y flatpak
-if ! flatpak remotes 2>/dev/null | grep -qi flathub; then
-    info "Добавление Flathub remote (без интерактивного промпта)..."
-    ( set +o pipefail; yes | run_cmd sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo ) || true
-else
-    info "Flathub уже подключён, пропускаю."
-fi
-info "Geoblock-фикс применён. Продолжаем установку пакетов..."
-
-# =============================================================================
-# --- ШАГ 1: DNF-ПАКЕТЫ (QT-НАБОР) ---
-# =============================================================================
-
-PKGS=(
-    dolphin kate ark kcalc plasma-breeze
-    adw-gtk3-theme
-    ddcutil i2c-tools fish
-    xdg-desktop-portal-kde xwayland-satellite alacritty cliphist wlsunset
-    qt6-qtwayland qt5-qtwayland kvantum qt6ct qt5ct
-    google-roboto-fonts fira-code-fonts
-    micro pavucontrol blueman NetworkManager network-manager-applet
-    qbittorrent nodejs npm neovim filelight git
-    mangohud kitty ripgrep eza wl-clipboard dconf niri
-    gnome-keyring imv mpv nvtop kio-extras kio-admin
-    gvfs-mtp gvfs-afc libmtp ffmpegthumbs kdegraphics-thumbnailers
-    gnome-disk-utility fuse ncdu socat xdg-desktop-portal-wlr gparted
-    xdg-terminal-exec obs-studio
-    make gcc python3-pip
-)
-
-info "Обновление системы..."
-run_cmd sudo dnf upgrade -y
-
-info "Проверка доступности пакетов в репозиториях..."
-run_cmd sudo dnf makecache
-
-AVAILABLE_PKGS=()
-MISSING_PKGS=()
-
-for pkg in "${PKGS[@]}"; do
-    if dnf repoquery --available --quiet "name:$pkg" &>/dev/null; then
-        AVAILABLE_PKGS+=("$pkg")
-    else
-        MISSING_PKGS+=("$pkg")
-    fi
-done
-
-if [ ${#MISSING_PKGS[@]} -gt 0 ]; then
-    warn "Следующие пакеты не найдены в репозиториях:"
-    printf '  - %s\n' "${MISSING_PKGS[@]}" >&2
+    MITIGATION_URL="https://raw.githubusercontent.com/supertico/fedora-open264-geoblock-fix/main/fedora-cisco-403-mitigation.sh"
 
     if [ "$DRY_RUN" = true ]; then
-        echo -e "\e[36m[DRY-RUN]\e[0m Продолжил бы установку без них."
+        echo -e "\e[36m[DRY-RUN]\e[0m Скачал бы и запустил: $MITIGATION_URL"
     else
-        read -rp "Продолжить установку без этих пакетов? [Y/n] " answer || answer="Y"
-        if [[ "$answer" =~ ^[Nn] ]]; then
-            error "Установка прервана пользователем."
+        curl -fsSL "$MITIGATION_URL" -o /tmp/fedora-cisco-403-mitigation.sh
+        bash /tmp/fedora-cisco-403-mitigation.sh
+        rm -f /tmp/fedora-cisco-403-mitigation.sh
+    fi
+}
+
+step_flathub() {
+    info "Подключение Flathub (remote only)..."
+    run_cmd sudo dnf install -y flatpak
+
+    if ! sudo flatpak remotes --columns=name 2>/dev/null | grep -qx "flathub"; then
+        info "Добавление Flathub remote (без интерактивного промпта)..."
+        run_cmd sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    else
+        info "Flathub уже подключён, пропускаю."
+    fi
+
+    info "Установка Gearlever (Flatpak)..."
+    run_cmd sudo flatpak install -y flathub it.mijorus.gearlever
+
+    info "Geoblock-фикс и Flathub готовы. Продолжаем установку пакетов..."
+}
+
+step_packages() {
+    PKGS=(
+        dolphin kate ark kcalc plasma-breeze
+        adw-gtk3-theme
+        ddcutil i2c-tools fish
+        xdg-desktop-portal-kde xwayland-satellite alacritty cliphist wlsunset
+        qt6-qtwayland qt5-qtwayland kvantum qt6ct qt5ct
+        google-roboto-fonts fira-code-fonts
+        micro pavucontrol blueman NetworkManager network-manager-applet
+        qbittorrent nodejs npm neovim filelight git
+        mangohud kitty ripgrep eza wl-clipboard dconf niri
+        gnome-keyring imv mpv nvtop kio-extras kio-admin
+        gvfs-mtp gvfs-afc libmtp ffmpegthumbs kdegraphics-thumbnailers
+        gnome-disk-utility fuse ncdu socat xdg-desktop-portal-wlr gparted
+        xdg-terminal-exec obs-studio
+        make gcc python3-pip
+    )
+
+    info "Обновление системы..."
+    run_cmd sudo dnf upgrade -y
+
+    info "Проверка доступности пакетов в репозиториях..."
+    run_cmd sudo dnf makecache
+
+    AVAILABLE_PKGS=()
+    MISSING_PKGS=()
+
+    for pkg in "${PKGS[@]}"; do
+        if dnf repoquery --available --quiet "name:$pkg" &>/dev/null; then
+            AVAILABLE_PKGS+=("$pkg")
+        else
+            MISSING_PKGS+=("$pkg")
+        fi
+    done
+
+    if [ ${#MISSING_PKGS[@]} -gt 0 ]; then
+        warn "Следующие пакеты не найдены в репозиториях:"
+        printf '  - %s\n' "${MISSING_PKGS[@]}" >&2
+
+        if [ "$DRY_RUN" = true ]; then
+            echo -e "\e[36m[DRY-RUN]\e[0m Продолжил бы установку без них."
+        else
+            read -rp "Продолжить установку без этих пакетов? [Y/n] " answer || answer="Y"
+            if [[ "$answer" =~ ^[Nn] ]]; then
+                error "Установка прервана пользователем."
+            fi
         fi
     fi
-fi
 
-if [ ${#AVAILABLE_PKGS[@]} -gt 0 ]; then
-    info "Установка пакетов из репозиториев..."
-    run_cmd sudo dnf install -y --skip-unavailable "${AVAILABLE_PKGS[@]}"
-else
-    warn "Нет доступных пакетов для установки из репозиториев."
-fi
-
-# =============================================================================
-# --- ШАГ 2: GIT-СБОРКИ (с очисткой исходников) ---
-# =============================================================================
+    if [ ${#AVAILABLE_PKGS[@]} -gt 0 ]; then
+        info "Установка пакетов из репозиториев..."
+        run_cmd sudo dnf install -y --skip-unavailable "${AVAILABLE_PKGS[@]}"
+    else
+        warn "Нет доступных пакетов для установки из репозиториев."
+    fi
+}
 
 build_keyd() {
     info "Сборка keyd из исходников..."
@@ -299,7 +423,6 @@ build_keyd() {
     sudo systemctl enable --now keyd
     rm -rf /tmp/keyd
 }
-build_keyd
 
 build_tela() {
     info "Установка tela-circle-icon-theme (скрипт upstream)..."
@@ -312,13 +435,19 @@ build_tela() {
     (cd /tmp/Tela-circle-icon-theme && ./install.sh -a)
     rm -rf /tmp/Tela-circle-icon-theme
 }
-build_tela
 
+step_gitbuilds() {
+    build_keyd
+    build_tela
+}
 
-
-# =============================================================================
-# --- ШАГ 3: DMS (официальный инсталлер dankinstall, от имени пользователя) ---
-# =============================================================================
+step_dms_prep() {
+    info "Подготовка зависимостей DMS (COPR + пакеты, чтобы dankinstall не звал sudo)..."
+    run_cmd sudo dnf copr enable -y avengemedia/danklinux
+    run_cmd sudo dnf copr enable -y avengemedia/dms
+    run_cmd sudo dnf install -y golang-bin git gcc make tar unzip
+    run_cmd sudo dnf install -y dms dms-greeter quickshell matugen cliphist danksearch dgop dankcalendar-git ghostty
+}
 
 install_dms() {
     info "Установка DMS через официальный инсталлер (dankinstall) от $REAL_USER..."
@@ -351,185 +480,185 @@ rm -rf "$TEMP_DIR"
 DMSINSTALL
 }
 
-info "Подготовка зависимостей DMS (COPR + пакеты, чтобы dankinstall не звал sudo)..."
-run_cmd sudo dnf copr enable -y avengemedia/danklinux
-run_cmd sudo dnf copr enable -y avengemedia/dms
-run_cmd sudo dnf install -y golang-bin git gcc make tar unzip
-run_cmd sudo dnf install -y dms dms-greeter quickshell matugen cliphist danksearch dgop dankcalendar-git ghostty
+step_dms_install() {
+    install_dms
+}
 
-install_dms
+step_copr_external() {
+    info "Установка portprotonqt (COPR boria138/portproton)..."
+    run_cmd sudo dnf copr enable -y boria138/portproton
+    run_cmd sudo dnf install -y portproton
 
-# =============================================================================
-# --- ШАГ 4: COPR + ВНЕШНИЕ ИНСТАЛЛЕРЫ ---
-# =============================================================================
+    info "Установка opencode..."
+    run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://opencode.ai/install | bash'
 
-info "Установка portprotonqt (COPR boria138/portproton)..."
-run_cmd sudo dnf copr enable -y boria138/portproton
-run_cmd sudo dnf install -y portproton
+    info "Установка ollama..."
+    run_cmd sudo bash -c 'curl -fsSL https://ollama.com/install.sh | sh'
 
-info "Установка Gearlever (Flatpak)..."
-run_cmd sudo flatpak install -y flathub it.mijorus.gearlever
+    info "Установка pi..."
+    run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://pi.dev/install.sh | sh'
+}
 
-info "Установка opencode..."
-run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://opencode.ai/install | bash'
+step_pywalfox() {
+    info "Установка pywalfox..."
+    run_cmd sudo -u "$REAL_USER" python3 -m pip install --user --break-system-packages pywalfox
 
-info "Установка ollama..."
-run_cmd sudo bash -c 'curl -fsSL https://ollama.com/install.sh | sh'
+    PYWALFOX_SRC="$USER_HOME/.cache/wal/dank-pywalfox.json"
+    PYWALFOX_DST="$USER_HOME/.cache/wal/colors.json"
 
-info "Установка pi..."
-run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://pi.dev/install.sh | sh'
+    if [ -f "$PYWALFOX_SRC" ]; then
+        info "Настройка pywalfox..."
+        run_cmd ln -sf "$PYWALFOX_SRC" "$PYWALFOX_DST"
+        [ "$DRY_RUN" = false ] && info "Создан линк: dank-pywalfox.json -> colors.json"
+    else
+        warn "Файл $PYWALFOX_SRC не найден, пропускаю настройку pywalfox."
+    fi
+}
 
-# =============================================================================
-# --- ШАГ 5: PYWALFOX ---
-# =============================================================================
+step_symlink() {
+    if [ -d "$DOT_DIR" ]; then
+        info "Линковка ~/.config из $DOT_DIR..."
+        run_cmd mkdir -p "$USER_HOME/.config"
 
-info "Установка pywalfox..."
-run_cmd sudo -u "$REAL_USER" python3 -m pip install --user --break-system-packages pywalfox
+        find "$DOT_DIR" -mindepth 1 -maxdepth 1 -print0 | while IFS= read -r -d '' item; do
+            base="$(basename "$item")"
+            target="$USER_HOME/.config/$base"
 
-PYWALFOX_SRC="$USER_HOME/.cache/wal/dank-pywalfox.json"
-PYWALFOX_DST="$USER_HOME/.cache/wal/colors.json"
+            if ! real_source="$(realpath "$item" 2>/dev/null)"; then
+                warn "Не удалось обработать: $item"
+                continue
+            fi
 
-if [ -f "$PYWALFOX_SRC" ]; then
-    info "Настройка pywalfox..."
-    run_cmd ln -sf "$PYWALFOX_SRC" "$PYWALFOX_DST"
-    [ "$DRY_RUN" = false ] && info "Создан линк: dank-pywalfox.json -> colors.json"
-else
-    warn "Файл $PYWALFOX_SRC не найден, пропускаю настройку pywalfox."
-fi
+            if [ -L "$target" ] && [ "$(realpath "$target" 2>/dev/null)" = "$real_source" ]; then
+                continue
+            fi
 
-# =============================================================================
-# --- ШАГ 6: ЛИНКОВКА КОНФИГОВ ---
-# =============================================================================
+            if [ -e "$target" ] || [ -L "$target" ]; then
+                backup="${target}.backup.$(date +%F_%H-%M-%S)"
+                if [ "$DRY_RUN" = true ]; then
+                    echo -e "\e[36m[DRY-RUN]\e[0m Создал бы бэкап: $backup"
+                else
+                    mv "$target" "$backup"
+                    info "Бэкап: $backup"
+                fi
+            fi
 
-if [ -d "$DOT_DIR" ]; then
-    info "Линковка ~/.config из $DOT_DIR..."
-    run_cmd mkdir -p "$USER_HOME/.config"
+            run_cmd ln -sfn "$real_source" "$target"
+            [ "$DRY_RUN" = false ] && info "Линковка: $base -> $real_source"
+        done
 
-    find "$DOT_DIR" -mindepth 1 -maxdepth 1 -print0 | while IFS= read -r -d '' item; do
-        base="$(basename "$item")"
-        target="$USER_HOME/.config/$base"
-
-        if ! real_source="$(realpath "$item" 2>/dev/null)"; then
-            warn "Не удалось обработать: $item"
-            continue
+        if [ -d "$USER_HOME/DotFiles/wallpaper" ]; then
+            info "Настройка обоев..."
+            run_cmd mkdir -p "$USER_HOME/Pictures"
+            run_cmd ln -sfn "$USER_HOME/DotFiles/wallpaper" "$USER_HOME/Pictures/wallpaper"
+        else
+            warn "Папка wallpaper не найдена, пропускаю."
         fi
+    else
+        warn "DOT_DIR не существует, линковка конфигов пропущена."
+    fi
+}
 
-        if [ -L "$target" ] && [ "$(realpath "$target" 2>/dev/null)" = "$real_source" ]; then
-            continue
-        fi
+step_theme_portals_qt() {
+    info "Включение тёмной темы..."
 
-        if [ -e "$target" ] || [ -L "$target" ]; then
-            backup="${target}.backup.$(date +%F_%H-%M-%S)"
-            if [ "$DRY_RUN" = true ]; then
-                echo -e "\e[36m[DRY-RUN]\e[0m Создал бы бэкап: $backup"
+    if command -v gsettings &>/dev/null; then
+        run_cmd gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null || true
+    elif command -v dconf &>/dev/null; then
+        run_cmd dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'" 2>/dev/null || true
+    else
+        warn "Ни gsettings, ни dconf не найдены, пропускаю настройку темы."
+    fi
+
+    NIRI_PORTALS="/usr/share/xdg-desktop-portal/niri-portals.conf"
+
+    if [ -f "$NIRI_PORTALS" ]; then
+        info "Настройка niri-portals.conf..."
+
+        if [ "$DRY_RUN" = true ]; then
+            echo -e "\e[36m[DRY-RUN]\e[0m Проверил бы/добавил бы: FileChooser=kde; ScreenCast=wlr;"
+        else
+            if sudo grep -q "^org\.freedesktop\.impl\.portal\.FileChooser=" "$NIRI_PORTALS"; then
+                sudo sed -i 's|^org\.freedesktop\.impl\.portal\.FileChooser=.*|org.freedesktop.impl.portal.FileChooser=kde;|' "$NIRI_PORTALS"
+                info "Заменено: FileChooser=kde;"
             else
-                mv "$target" "$backup"
-                info "Бэкап: $backup"
+                echo "org.freedesktop.impl.portal.FileChooser=kde;" | sudo tee -a "$NIRI_PORTALS" > /dev/null
+                info "Добавлено: FileChooser=kde;"
+            fi
+
+            if sudo grep -q "^org\.freedesktop\.impl\.portal\.ScreenCast=" "$NIRI_PORTALS"; then
+                sudo sed -i 's|^org\.freedesktop\.impl\.portal\.ScreenCast=.*|org.freedesktop.impl.portal.ScreenCast=wlr;|' "$NIRI_PORTALS"
+                info "Заменено: ScreenCast=wlr;"
+            else
+                echo "org.freedesktop.impl.portal.ScreenCast=wlr;" | sudo tee -a "$NIRI_PORTALS" > /dev/null
+                info "Добавлено: ScreenCast=wlr;"
             fi
         fi
-
-        run_cmd ln -sfn "$real_source" "$target"
-        [ "$DRY_RUN" = false ] && info "Линковка: $base -> $real_source"
-    done
-
-    if [ -d "$USER_HOME/DotFiles/wallpaper" ]; then
-        info "Настройка обоев..."
-        run_cmd mkdir -p "$USER_HOME/Pictures"
-        run_cmd ln -sfn "$USER_HOME/DotFiles/wallpaper" "$USER_HOME/Pictures/wallpaper"
     else
-        warn "Папка wallpaper не найдена, пропускаю."
+        warn "Файл $NIRI_PORTALS не найден, пропускаю настройку порталов."
     fi
-else
-    warn "DOT_DIR не существует, линковка конфигов пропущена."
-fi
 
-# =============================================================================
-# --- ШАГ 7: ТЁМНАЯ ТЕМА ---
-# =============================================================================
+    info "Применение специфичных настроек QT..."
 
-info "Включение тёмной темы..."
-
-if command -v gsettings &>/dev/null; then
-    run_cmd gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null || true
-elif command -v dconf &>/dev/null; then
-    run_cmd dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'" 2>/dev/null || true
-else
-    warn "Ни gsettings, ни dconf не найдены, пропускаю настройку темы."
-fi
-
-# =============================================================================
-# --- ШАГ 8: NIRI PORTALS ---
-# =============================================================================
-
-NIRI_PORTALS="/usr/share/xdg-desktop-portal/niri-portals.conf"
-
-if [ -f "$NIRI_PORTALS" ]; then
-    info "Настройка niri-portals.conf..."
-
-    if [ "$DRY_RUN" = true ]; then
-        echo -e "\e[36m[DRY-RUN]\e[0m Проверил бы/добавил бы: FileChooser=kde;"
+    if command -v kwriteconfig6 &>/dev/null; then
+        run_cmd kwriteconfig6 --file kdeglobals --group General --key TerminalApplication "alacritty"
+        [ "$DRY_RUN" = false ] && info "Установлен терминал по умолчанию: alacritty"
     else
-        if sudo grep -q "^org\.freedesktop\.impl\.portal\.FileChooser=" "$NIRI_PORTALS"; then
-            sudo sed -i 's|^org\.freedesktop\.impl\.portal\.FileChooser=.*|org.freedesktop.impl.portal.FileChooser=kde;|' "$NIRI_PORTALS"
-            info "Заменено: FileChooser=kde;"
-        else
-            echo "org.freedesktop.impl.portal.FileChooser=kde;" | sudo tee -a "$NIRI_PORTALS" > /dev/null
-            info "Добавлено: FileChooser=kde;"
-        fi
+        warn "kwriteconfig6 не найден, пропускаю настройку терминала."
     fi
+}
 
-    if [ "$DRY_RUN" = true ]; then
-        echo -e "\e[36m[DRY-RUN]\e[0m Проверил бы/добавил бы: ScreenCast=wlr;"
+step_shell() {
+    FISH_BIN="$(command -v fish 2>/dev/null || true)"
+    if [ -n "$FISH_BIN" ]; then
+        CURRENT_SHELL="$(getent passwd "$REAL_USER" | cut -d: -f7)"
+
+        if [ "$CURRENT_SHELL" != "$FISH_BIN" ]; then
+            info "Смена shell на fish для пользователя $REAL_USER..."
+
+            if ! grep -qxF "$FISH_BIN" /etc/shells 2>/dev/null; then
+                run_cmd sudo sh -c "echo '$FISH_BIN' >> /etc/shells"
+            fi
+
+            run_cmd sudo usermod -s "$FISH_BIN" "$REAL_USER"
+        fi
     else
-        if sudo grep -q "^org\.freedesktop\.impl\.portal\.ScreenCast=" "$NIRI_PORTALS"; then
-            sudo sed -i 's|^org\.freedesktop\.impl\.portal\.ScreenCast=.*|org.freedesktop.impl.portal.ScreenCast=wlr;|' "$NIRI_PORTALS"
-            info "Заменено: ScreenCast=wlr;"
-        else
-            echo "org.freedesktop.impl.portal.ScreenCast=wlr;" | sudo tee -a "$NIRI_PORTALS" > /dev/null
-            info "Добавлено: ScreenCast=wlr;"
-        fi
+        warn "fish не найден в системе, пропускаю смену shell."
     fi
-else
-    warn "Файл $NIRI_PORTALS не найден, пропускаю настройку порталов."
-fi
+}
 
 # =============================================================================
-# --- ШАГ 9: QT-СПЕЦИФИЧНЫЕ НАСТРОЙКИ ---
+# --- ГЛАВНЫЙ ДИСПЕТЧЕР ---
 # =============================================================================
 
-info "Применение специфичных настроек QT..."
+init_state
 
-if command -v kwriteconfig6 &>/dev/null; then
-    run_cmd kwriteconfig6 --file kdeglobals --group General --key TerminalApplication "alacritty"
-    [ "$DRY_RUN" = false ] && info "Установлен терминал по умолчанию: alacritty"
-else
-    warn "kwriteconfig6 не найден, пропускаю настройку терминала."
-fi
-
-# =============================================================================
-# --- ШАГ 10: SHELL (FISH) ---
-# =============================================================================
-
-FISH_BIN="$(command -v fish 2>/dev/null || true)"
-if [ -n "$FISH_BIN" ]; then
-    CURRENT_SHELL="$(getent passwd "$REAL_USER" | cut -d: -f7)"
-
-    if [ "$CURRENT_SHELL" != "$FISH_BIN" ]; then
-        info "Смена shell на fish для пользователя $REAL_USER..."
-
-        if ! grep -qxF "$FISH_BIN" /etc/shells 2>/dev/null; then
-            run_cmd sudo sh -c "echo '$FISH_BIN' >> /etc/shells"
-        fi
-
-        run_cmd sudo usermod -s "$FISH_BIN" "$REAL_USER"
+# Проверяем, не установлено ли уже всё
+all_done=true
+for step in "${STEPS[@]}"; do
+    if ! is_step_done "$step"; then
+        all_done=false
+        break
     fi
-else
-    warn "fish не найден в системе, пропускаю смену shell."
+done
+
+if [ "$all_done" = true ] && [ "$RESET_STATE" = false ]; then
+    info "🎉 Все шаги уже выполнены! Система настроена."
+    info "Используй sudo $0 --reset, чтобы выполнить установку заново."
+    exit 0
 fi
 
-# =============================================================================
-# --- ЗАВЕРШЕНИЕ + НАПОМИНАЛКА ---
-# =============================================================================
+run_step "geoblock" step_geoblock
+run_step "flathub" step_flathub
+run_step "packages" step_packages
+run_step "gitbuilds" step_gitbuilds
+run_step "dms_prep" step_dms_prep
+run_step "dms_install" step_dms_install
+run_step "copr_external" step_copr_external
+run_step "pywalfox" step_pywalfox
+run_step "symlink" step_symlink
+run_step "theme_portals_qt" step_theme_portals_qt
+run_step "shell" step_shell
 
 SUCCESS=true
 
