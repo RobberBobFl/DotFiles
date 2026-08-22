@@ -332,7 +332,7 @@ info "Подготовка зависимостей DMS (COPR + пакеты, ч
 run_cmd sudo dnf copr enable -y avengemedia/danklinux
 run_cmd sudo dnf copr enable -y avengemedia/dms
 run_cmd sudo dnf install -y golang-bin git gcc make tar unzip
-run_cmd sudo dnf install -y dms dms-greeter quickshell-git matugen cliphist danksearch dgop dankcalendar-git ghostty
+run_cmd sudo dnf install -y dms dms-greeter quickshell matugen cliphist danksearch dgop dankcalendar-git ghostty
 
 install_dms
 
