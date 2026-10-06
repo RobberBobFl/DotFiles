@@ -193,7 +193,7 @@ if [[ "$choice" == "1" ]]; then
     PKGS_AUR=(
         greetd-dms-greeter-git v2rayn yandex-browser
         geany-themes xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
-        portprotonqt python-pywalfox dms-shell-git  wayfreeze-git
+        portprotonqt python-pywalfox dms-shell-git quickshell-git wayfreeze-git
     )
 
 elif [[ "$choice" == "2" ]]; then
