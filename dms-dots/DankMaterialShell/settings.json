@@ -6,7 +6,7 @@
     "catppuccin": {
       "dark": {
         "flavor": "mocha",
-        "accent": "green"
+        "accent": "teal"
       },
       "light": {
         "flavor": "latte",
@@ -28,7 +28,9 @@
     "gnomeAdwaita": "blue"
   },
   "cornerRadius": 12,
-  "mouseAccelProfile": "flat",
+  "niriLayoutGapsOverride": -2,
+  "niriLayoutRadiusOverride": 1,
+  "niriLayoutBorderSize": 2,
   "firstDayOfWeek": 1,
   "clockFormat": "24h",
   "customAnimationDuration": 200,
@@ -312,6 +314,7 @@
       "enabled": true
     }
   },
+  "frameShowOnOverview": true,
   "frameMode": "separate",
-  "configVersion": 16
+  "configVersion": 18
 }
