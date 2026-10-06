@@ -1,0 +1,4 @@
+# Backup files created by DMS/niri updates
+*.backup*
+# DMS changelog markers
+.changelog-*

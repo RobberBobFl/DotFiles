@@ -188,12 +188,12 @@ if [[ "$choice" == "1" ]]; then
         keyd celluloid imv xarchiver xfce4-settings gvfs-mtp gvfs-afc libmtp
         tumbler nvtop gnome-disk-utility heroic-games-launcher-bin
         fuse2 foliate zed obs-studio ncdu socat xdg-desktop-portal-wlr gparted
-        archlinux-xdg-menu
+        archlinux-xdg-menu tesseract tesseract-data-rus tesseract-data-eng
     )
     PKGS_AUR=(
-        greetd-dms-greeter-git quickshell-git v2rayn yandex-browser
+        greetd-dms-greeter-git v2rayn yandex-browser
         geany-themes xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
-        portprotonqt python-pywalfox dms-shell-git
+        portprotonqt python-pywalfox dms-shell-git  wayfreeze-git
     )
 
 elif [[ "$choice" == "2" ]]; then
@@ -211,12 +211,12 @@ elif [[ "$choice" == "2" ]]; then
         keyd gnome-keyring imv mpv nvtop kio-extras kio-admin gvfs-mtp gvfs-afc
         libmtp ffmpegthumbs kdegraphics-thumbnailers gnome-disk-utility
         heroic-games-launcher-bin
-        fuse2 foliate zed obs-studio ncdu socat xdg-desktop-portal-wlr gparted
+        fuse2 foliate zed obs-studio ncdu socat xdg-desktop-portal-wlr gparted tesseract tesseract-data-rus tesseract-data-eng
     )
     PKGS_AUR=(
-        greetd-dms-greeter-git quickshell-git v2rayn yandex-browser
+        greetd-dms-greeter-git v2rayn yandex-browser
         xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
-        portprotonqt python-pywalfox dms-shell-git
+        portprotonqt python-pywalfox dms-shell-git quickshell-git wayfreeze-git
     )
 else
     error "Неверный выбор. Введите 1 или 2."
