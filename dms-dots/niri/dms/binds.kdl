@@ -99,4 +99,5 @@ binds {
     MOD+ESCAPE allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
     MOD+O { toggle-overview; }
     MOD+SHIFT+ESCAPE { show-hotkey-overlay; }
+    F9 { spawn "~/.config/niri/scripts/wayland-ocr.sh"; }
 }
