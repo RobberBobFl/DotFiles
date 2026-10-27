@@ -185,6 +185,7 @@ if [[ "$choice" == "1" ]]; then
         ttf-firacode-nerd micro pavucontrol blueman networkmanager
         network-manager-applet thunar nwg-look obsidian qbittorrent nodejs npm
         neovim geany yazi git mangohud kitty ripgrep eza wl-clipboard dconf niri
+        hyprland xdg-desktop-portal-hyprland
         keyd celluloid imv xarchiver xfce4-settings gvfs-mtp gvfs-afc libmtp
         tumbler nvtop gnome-disk-utility heroic-games-launcher-bin
         fuse2 foliate zed obs-studio ncdu socat xdg-desktop-portal-wlr gparted
@@ -208,6 +209,7 @@ elif [[ "$choice" == "2" ]]; then
         ttf-firacode-nerd micro pavucontrol blueman networkmanager
         network-manager-applet nwg-look obsidian qbittorrent nodejs npm neovim
         filelight yazi git mangohud kitty ripgrep eza wl-clipboard dconf niri
+        hyprland xdg-desktop-portal-hyprland
         keyd gnome-keyring imv mpv nvtop kio-extras kio-admin gvfs-mtp gvfs-afc
         libmtp ffmpegthumbs kdegraphics-thumbnailers gnome-disk-utility
         heroic-games-launcher-bin
@@ -387,51 +389,62 @@ else
 fi
 
 # =============================================================================
-# --- НАСТРОЙКА: Niri Portals ---
+# --- НАСТРОЙКА: PORTALS (Niri & Hyprland) ---
 # =============================================================================
 
-NIRI_PORTALS="/usr/share/xdg-desktop-portal/niri-portals.conf"
+PORTAL_DIR="/usr/share/xdg-desktop-portal"
+run_cmd sudo mkdir -p "$PORTAL_DIR"
 
-if [ -f "$NIRI_PORTALS" ]; then
+# 1) Niri portals
+if [ -f "$USER_HOME/DotFiles/niri-portals.conf" ]; then
+    info "Копирование niri-portals.conf..."
+    run_cmd sudo cp "$USER_HOME/DotFiles/niri-portals.conf" "$PORTAL_DIR/niri-portals.conf"
+elif [ -f "$PORTAL_DIR/niri-portals.conf" ]; then
     info "Настройка niri-portals.conf..."
 
-    # 9) FileChooser: проверяем наличие, заменяем или добавляем
+    # FileChooser: проверяем наличие, заменяем или добавляем
     if [ "$DRY_RUN" = true ]; then
         echo -e "\e[36m[DRY-RUN]\e[0m Проверил бы/добавил бы: FileChooser=gtk;"
     else
-        if sudo grep -q "^org\.freedesktop\.impl\.portal\.FileChooser=" "$NIRI_PORTALS"; then
-            # Строка уже есть — заменяем значение на gtk
-            sudo sed -i 's|^org\.freedesktop\.impl\.portal\.FileChooser=.*|org.freedesktop.impl.portal.FileChooser=gtk;|' "$NIRI_PORTALS"
+        if sudo grep -q "^org\.freedesktop\.impl\.portal\.FileChooser=" "$PORTAL_DIR/niri-portals.conf"; then
+            sudo sed -i 's|^org\.freedesktop\.impl\.portal\.FileChooser=.*|org.freedesktop.impl.portal.FileChooser=gtk;|' "$PORTAL_DIR/niri-portals.conf"
             info "Заменено: FileChooser=gtk;"
         else
-            # Строки нет — добавляем в конец
-            echo "org.freedesktop.impl.portal.FileChooser=gtk;" | sudo tee -a "$NIRI_PORTALS" > /dev/null
+            echo "org.freedesktop.impl.portal.FileChooser=gtk;" | sudo tee -a "$PORTAL_DIR/niri-portals.conf" > /dev/null
             info "Добавлено: FileChooser=gtk;"
         fi
     fi
 
-    # 10) ScreenCast: проверяем наличие, заменяем или добавляем
+    # ScreenCast: проверяем наличие, заменяем или добавляем
     if [ "$DRY_RUN" = true ]; then
         echo -e "\e[36m[DRY-RUN]\e[0m Проверил бы/добавил бы: ScreenCast=wlr;"
     else
-        if sudo grep -q "^org\.freedesktop\.impl\.portal\.ScreenCast=" "$NIRI_PORTALS"; then
-            # Строка уже есть — заменяем значение на wlr
-            sudo sed -i 's|^org\.freedesktop\.impl\.portal\.ScreenCast=.*|org.freedesktop.impl.portal.ScreenCast=wlr;|' "$NIRI_PORTALS"
+        if sudo grep -q "^org\.freedesktop\.impl\.portal\.ScreenCast=" "$PORTAL_DIR/niri-portals.conf"; then
+            sudo sed -i 's|^org\.freedesktop\.impl\.portal\.ScreenCast=.*|org.freedesktop.impl.portal.ScreenCast=wlr;|' "$PORTAL_DIR/niri-portals.conf"
             info "Заменено: ScreenCast=wlr;"
         else
-            # Строки нет — добавляем в конец
-            echo "org.freedesktop.impl.portal.ScreenCast=wlr;" | sudo tee -a "$NIRI_PORTALS" > /dev/null
+            echo "org.freedesktop.impl.portal.ScreenCast=wlr;" | sudo tee -a "$PORTAL_DIR/niri-portals.conf" > /dev/null
             info "Добавлено: ScreenCast=wlr;"
         fi
     fi
 else
-    warn "Файл $NIRI_PORTALS не найден, пропускаю настройку порталов."
+    warn "Файл $PORTAL_DIR/niri-portals.conf не найден, пропускаю настройку порталов Niri."
+fi
+
+# 2) Hyprland portals
+if [ -f "$USER_HOME/DotFiles/hyprland-portals.conf" ]; then
+    info "Копирование hyprland-portals.conf..."
+    run_cmd sudo cp "$USER_HOME/DotFiles/hyprland-portals.conf" "$PORTAL_DIR/hyprland-portals.conf"
+else
+    warn "Файл hyprland-portals.conf не найден в DotFiles, пропускаю."
 fi
 
 # =============================================================================
 # --- НАСТРОЙКА: СПЕЦИФИЧНЫЕ ДЛЯ QT ---
 # =============================================================================
-    # 6) kwriteconfig6: установка alacritty как терминал по умолчанию
+
+if [[ "$CHOICE" == "2" ]]; then
+    # kwriteconfig6: установка alacritty как терминал по умолчанию
     if command -v kwriteconfig6 &>/dev/null; then
         run_cmd kwriteconfig6 --file kdeglobals --group General --key TerminalApplication "alacritty"
         [ "$DRY_RUN" = false ] && info "Установлен терминал по умолчанию: alacritty"

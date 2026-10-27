@@ -13,5 +13,9 @@ input {
         natural-scroll
         dwt
     }
+    keyboard {
+        xkb {
+            options "grp:alt_shift_toggle"
+        }
+    }
 }
-

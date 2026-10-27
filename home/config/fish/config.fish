@@ -142,3 +142,11 @@ alias rs="pkexec env DISPLAY=:0 XDG_RUNTIME_DIR=/run/user/1000 WAYLAND_DISPLAY=$
 set -gx PATH $PATH /home/borrow/.lmstudio/bin
 # End of LM Studio CLI section
 
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/borrow/.local/bin" $PATH
+
+# QODER_DISPATCHER_PATH v1
+fish_add_path -p -m $HOME/.qoder/entry
+# END QODER_DISPATCHER_PATH v1

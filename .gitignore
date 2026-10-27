@@ -1,4 +1,8 @@
 # Backup files created by DMS/niri updates
 *.backup*
+*.bak
+*.bak*
 # DMS changelog markers
 .changelog-*
+# ZCode
+.zcode*

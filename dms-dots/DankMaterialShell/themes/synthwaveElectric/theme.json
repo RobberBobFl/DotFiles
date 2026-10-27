@@ -1,0 +1,129 @@
+{
+  "id": "synthwaveElectric",
+  "name": "Synthwave Electric",
+  "version": "1.0.0",
+  "author": "yayuuu",
+  "description": "Synthwave Electric color palette with contrasting colors, vibrant blues and sunset orange",
+  "dark": {
+    "primary": "#FF6600",
+    "primaryText": "#000000",
+    "primaryContainer": "#CC5200",
+    "secondary": "#0080FF",
+    "surface": "#0A0A15",
+    "surfaceText": "#E6F0FF",
+    "surfaceVariant": "#1A1A33",
+    "surfaceVariantText": "#CCE0FF",
+    "surfaceTint": "#FF6600",
+    "background": "#0A0A15",
+    "backgroundText": "#F0F8FF",
+    "outline": "#4D80FF",
+    "surfaceContainer": "#0A0A15",
+    "surfaceContainerHigh": "#151529",
+    "error": "#FF3366",
+    "warning": "#FFCC00",
+    "info": "#0080FF"
+  },
+  "light": {
+    "primary": "#CC5200",
+    "primaryText": "#FFFFFF",
+    "primaryContainer": "#FF9966",
+    "secondary": "#0066CC",
+    "surface": "#FFF8F0",
+    "surfaceText": "#1A1A33",
+    "surfaceVariant": "#F0F0FF",
+    "surfaceVariantText": "#333366",
+    "surfaceTint": "#CC5200",
+    "background": "#FFFFFF",
+    "backgroundText": "#000008",
+    "outline": "#3366CC",
+    "surfaceContainer": "#F5F5FF",
+    "surfaceContainerHigh": "#EBEBFF",
+    "error": "#CC1A40",
+    "warning": "#CC9900",
+    "info": "#0066CC"
+  },
+  "wcag": {
+    "level": "fail",
+    "dark": {
+      "level": "AA",
+      "minRatio": 6.7,
+      "worstPair": [
+        "primary",
+        "surfaceContainer"
+      ],
+      "body": {
+        "level": "AAA",
+        "minRatio": 13.38,
+        "worstPair": [
+          "surfaceVariantText",
+          "surfaceContainerHigh"
+        ]
+      },
+      "accent": {
+        "level": "AA",
+        "minRatio": 6.7,
+        "worstPair": [
+          "primary",
+          "surfaceContainer"
+        ]
+      },
+      "nonText": {
+        "level": "AA",
+        "minRatio": 5.18,
+        "worstPair": [
+          "info",
+          "surfaceContainer"
+        ]
+      },
+      "breakdown": [
+        {
+          "name": "Dark",
+          "mode": "dark",
+          "level": "AA",
+          "bodyLevel": "AAA"
+        }
+      ]
+    },
+    "light": {
+      "level": "fail",
+      "minRatio": 4.06,
+      "worstPair": [
+        "primary",
+        "surfaceContainer"
+      ],
+      "body": {
+        "level": "AAA",
+        "minRatio": 9.89,
+        "worstPair": [
+          "surfaceVariantText",
+          "surfaceContainerHigh"
+        ]
+      },
+      "accent": {
+        "level": "fail",
+        "minRatio": 4.06,
+        "worstPair": [
+          "primary",
+          "surfaceContainer"
+        ]
+      },
+      "nonText": {
+        "level": "fail",
+        "minRatio": 2.39,
+        "worstPair": [
+          "warning",
+          "surfaceContainer"
+        ]
+      },
+      "breakdown": [
+        {
+          "name": "Light",
+          "mode": "light",
+          "level": "fail",
+          "bodyLevel": "AAA"
+        }
+      ]
+    }
+  },
+  "sourceDir": "synthwave-electric"
+}

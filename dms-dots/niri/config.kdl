@@ -104,10 +104,11 @@ config-notification {
     }
 
 // Твой автозапуск + системный dms 
-spawn-sh-at-startup "dms run" 
+spawn-sh-at-startup "dms run"
+//spawn-at-startup "noctalia"
 //spawn-sh-at-startup "/usr/lib64/mate-polkit/polkit-mate-authentication-agent-1 &" 
 //spawn-sh-at-startup "v2rayn"
-spawn-sh-at-startup "/home/borrow/v2rayN-linux-64/v2rayN"
+spawn-sh-at-startup "/home/borrow/Throne/Throne"
 spawn-sh-at-startup "/usr/lib/xdg-desktop-portal-gtk"
 spawn-sh-at-startup "wlsunset -S 07:00 -s 20:00 -t 3500 -T 6500 -d 0"
 
@@ -187,3 +188,5 @@ debug {
     honor-xdg-activation-with-invalid-serial 
 }
 include "dms/layout.kdl"
+
+
