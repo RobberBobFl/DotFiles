@@ -192,7 +192,7 @@ if [[ "$choice" == "1" ]]; then
         archlinux-xdg-menu tesseract tesseract-data-rus tesseract-data-eng
     )
     PKGS_AUR=(
-        greetd-dms-greeter-git v2rayn yandex-browser
+        greetd-dms-greeter-git yandex-browser
         geany-themes xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
         portprotonqt python-pywalfox dms-shell-git quickshell-git wayfreeze-git
     )
@@ -216,7 +216,7 @@ elif [[ "$choice" == "2" ]]; then
         fuse2 foliate zed obs-studio ncdu socat xdg-desktop-portal-wlr gparted tesseract tesseract-data-rus tesseract-data-eng
     )
     PKGS_AUR=(
-        greetd-dms-greeter-git v2rayn yandex-browser
+        greetd-dms-greeter-git yandex-browser
         xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
         portprotonqt python-pywalfox dms-shell-git quickshell-git wayfreeze-git
     )

@@ -150,3 +150,7 @@ set -gx PATH "/home/borrow/.local/bin" $PATH
 # QODER_DISPATCHER_PATH v1
 fish_add_path -p -m $HOME/.qoder/entry
 # END QODER_DISPATCHER_PATH v1
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH

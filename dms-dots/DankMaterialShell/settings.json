@@ -203,7 +203,7 @@
       "screenPreferences": [
         "all"
       ],
-      "showOnLastDisplay": true,
+      "showOnLastDisplay": false,
       "leftWidgets": [
         {
           "id": "launcherButton",
@@ -295,9 +295,9 @@
       "maximizeWidgetIcons": false,
       "maximizeWidgetText": false,
       "widgetPadding": 8,
-      "gothCornersEnabled": false,
-      "gothCornerRadiusOverride": false,
-      "gothCornerRadiusValue": 18,
+      "gothCornersEnabled": true,
+      "gothCornerRadiusOverride": true,
+      "gothCornerRadiusValue": 0,
       "borderEnabled": false,
       "borderColor": "surfaceText",
       "borderOpacity": 1,
@@ -334,7 +334,8 @@
       "barLengthMode": "full",
       "barLengthPercent": 54,
       "barInsetPadding": -1,
-      "attachToScreenEdge": true
+      "attachToScreenEdge": true,
+      "hideOnLastDisplay": false
     },
     {
       "id": "dot1791637491717",
@@ -567,5 +568,7 @@
     "niri",
     "hyprland"
   ],
-  "keyboardOptions": "grp:alt_shift_toggle"
+  "keyboardOptions": "grp:alt_shift_toggle",
+  "modalElevationEnabled": true,
+  "widgetColorMode": "default"
 }

@@ -108,10 +108,10 @@ hl.env("XDG_TERMINAL_EXEC", "alacritty")
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
 hl.config({
     general = {
-        gaps_in  = 2,
-        gaps_out = 2,
+        gaps_in  = 1,
+        gaps_out = 1,
 
-        border_size = 2,
+        border_size = 1,
 
         col = {
             active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
@@ -124,7 +124,7 @@ hl.config({
         -- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
         allow_tearing = false,
 
-        layout = "dwindle",
+        layout = "scrolling",
     },
 
     decoration = {
@@ -155,33 +155,51 @@ hl.config({
     },
 })
 
--- Default curves and animations, see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/
-hl.curve("easeOutQuint",   { type = "bezier", points = { {0.23, 1},    {0.32, 1}    } })
-hl.curve("easeInOutCubic", { type = "bezier", points = { {0.65, 0.05}, {0.36, 1}    } })
-hl.curve("linear",         { type = "bezier", points = { {0, 0},       {1, 1}       } })
-hl.curve("almostLinear",   { type = "bezier", points = { {0.5, 0.5},   {0.75, 1}    } })
-hl.curve("quick",          { type = "bezier", points = { {0.15, 0},    {0.1, 1}     } })
+-- Curves
+hl.curve("linear",         { type = "bezier", points = { {0, 0}, {1, 1} } })
+hl.curve("md3_standard",   { type = "bezier", points = { {0.2, 0}, {0, 1} } })
+hl.curve("md3_decel",      { type = "bezier", points = { {0.05, 0.7}, {0.1, 1} } })
+hl.curve("md3_accel",      { type = "bezier", points = { {0.3, 0}, {0.8, 0.15} } })
+hl.curve("overshot",       { type = "bezier", points = { {0.05, 0.9}, {0.1, 1.1} } })
+hl.curve("crazyshot",      { type = "bezier", points = { {0.1, 1.5}, {0.76, 0.92} } })
+hl.curve("hyprnostretch",  { type = "bezier", points = { {0.05, 0.9}, {0.1, 1.0} } })
+hl.curve("fluent_decel",   { type = "bezier", points = { {0.1, 1}, {0, 1} } })
+hl.curve("easeInOutCirc",  { type = "bezier", points = { {0.85, 0}, {0.15, 1} } })
+hl.curve("easeOutCirc",    { type = "bezier", points = { {0, 0.55}, {0.45, 1} } })
+hl.curve("easeOutExpo",    { type = "bezier", points = { {0.16, 1}, {0.3, 1} } })
+hl.curve("easeOutQuint",   { type = "bezier", points = { {0.23, 1}, {0.32, 1} } })
 
--- Default springs (1.25x faster)
-hl.curve("easy",           { type = "spring", mass = 1, stiffness = 372.06, dampening = 30.26 })
+-- Windows animations (Fast / Material Design 3)
+hl.animation({ leaf = "windows",      enabled = true, speed = 1.8, bezier = "md3_decel", style = "popin 60%" })
+hl.animation({ leaf = "windowsIn",    enabled = true, speed = 2,   bezier = "md3_decel", style = "popin 60%" })
+hl.animation({ leaf = "windowsOut",   enabled = true, speed = 1.6, bezier = "md3_decel", style = "popin 60%" })
+hl.animation({ leaf = "windowsMove",  enabled = true, speed = 1.8, bezier = "md3_decel", style = "popin 60%" })
 
-hl.animation({ leaf = "global",        enabled = true,  speed = 8,    bezier = "default" })
-hl.animation({ leaf = "border",        enabled = true,  speed = 4.31, bezier = "easeOutQuint" })
-hl.animation({ leaf = "windows",       enabled = true,  speed = 3.83, spring = "easy" })
-hl.animation({ leaf = "windowsIn",     enabled = true,  speed = 3.28, spring = "easy",         style = "popin 87%" })
-hl.animation({ leaf = "windowsOut",    enabled = true,  speed = 1.19, bezier = "linear",       style = "popin 87%" })
-hl.animation({ leaf = "fadeIn",        enabled = true,  speed = 1.38, bezier = "almostLinear" })
-hl.animation({ leaf = "fadeOut",       enabled = true,  speed = 1.17, bezier = "almostLinear" })
-hl.animation({ leaf = "fade",          enabled = true,  speed = 2.42, bezier = "quick" })
-hl.animation({ leaf = "layers",        enabled = true,  speed = 3.05, bezier = "easeOutQuint" })
-hl.animation({ leaf = "layersIn",      enabled = true,  speed = 3.2,  bezier = "easeOutQuint", style = "fade" })
-hl.animation({ leaf = "layersOut",     enabled = true,  speed = 1.2,  bezier = "linear",       style = "fade" })
-hl.animation({ leaf = "fadeLayersIn",  enabled = true,  speed = 1.43, bezier = "almostLinear" })
-hl.animation({ leaf = "fadeLayersOut", enabled = true,  speed = 1.11, bezier = "almostLinear" })
-hl.animation({ leaf = "workspaces",    enabled = true,  speed = 1.55, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesIn",  enabled = true,  speed = 0.97, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesOut", enabled = true,  speed = 1.55, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "zoomFactor",    enabled = true,  speed = 5.6,  bezier = "quick" })
+-- Fade animations
+hl.animation({ leaf = "fade",         enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadeIn",       enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadeOut",      enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadeSwitch",   enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadeShadow",   enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadeDim",      enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadeLayers",   enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadeLayersIn", enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadeLayersOut",enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadePopups",   enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadePopupsIn", enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadePopupsOut",enabled = true, speed = 1.8, bezier = "md3_decel" })
+hl.animation({ leaf = "fadeDpms",     enabled = true, speed = 1.8, bezier = "md3_decel" })
+
+-- Special workspace (scratchpad)
+hl.animation({ leaf = "specialWorkspace",    enabled = true, speed = 3, bezier = "md3_decel", style = "slidevert" })
+hl.animation({ leaf = "specialWorkspaceIn",  enabled = true, speed = 3, bezier = "md3_decel", style = "slidevert" })
+hl.animation({ leaf = "specialWorkspaceOut", enabled = true, speed = 3, bezier = "md3_decel", style = "slidevert" })
+
+-- Border
+hl.animation({ leaf = "border", enabled = true, speed = 10, bezier = "default" })
+
+-- Workspaces (preserved our customized vertical slide from Niri)
+hl.animation({ leaf = "workspaces", enabled = true, speed = 2.4, bezier = "easeOutQuint", style = "slidevert" })
 
 -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 -- Automatically compact workspaces when a workspace is vacated (dynamic workspaces like in Niri)
@@ -279,7 +297,9 @@ hl.config({
 -- See https://wiki.hypr.land/Configuring/Layouts/Scrolling-Layout/ for more
 hl.config({
     scrolling = {
-        fullscreen_on_one_column = true,
+        column_width             = 0.5,
+        fullscreen_on_one_column = false,
+        explicit_column_widths   = "0.33333, 0.5, 0.66667",
     },
 })
 
@@ -373,18 +393,60 @@ hl.bind("CTRL + ALT + Print", hl.dsp.exec_cmd("dms screenshot window -d " .. scr
 
 -- Window Actions
 hl.bind(mainMod .. " + Q",         hl.dsp.window.close())
-hl.bind(mainMod .. " + C",         hl.dsp.window.center())
+hl.bind(mainMod .. " + C", function ()
+    local win = hl.get_active_window()
+    if not win then return end
+    if win.floating then
+        hl.dispatch(hl.dsp.window.center())
+    else
+        hl.dispatch(hl.dsp.layout("center"))
+    end
+end)
 hl.bind(mainMod .. " + T",         hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F",         hl.dsp.window.fullscreen())
-hl.bind(mainMod .. " + CTRL + F",  hl.dsp.window.fullscreen({ mode = "maximized", action = "toggle" }))
+-- Maximize column to edges (like Niri maximize-window-to-edges, 100% column width)
+hl.bind(mainMod .. " + CTRL + F", function ()
+    local win = hl.get_active_window()
+    if not win then return end
+
+    -- If window was in modal fullscreen, turn it off first
+    if win.fullscreen and win.fullscreen ~= 0 then
+        hl.dispatch(hl.dsp.window.fullscreen())
+    end
+
+    local mon = hl.get_active_monitor()
+    local mon_w = (mon and mon.width) or 1920
+    local win_w = (win.size and win.size.x) or 0
+
+    if win_w > mon_w * 0.75 then
+        hl.dispatch(hl.dsp.layout("colresize 0.5"))
+    else
+        hl.dispatch(hl.dsp.layout("colresize 1.0"))
+    end
+end)
 hl.bind(mainMod .. " + P",         hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + SHIFT + P", hl.dsp.exec_cmd("hyprctl dispatch dpms off"))
 hl.bind("CTRL + ALT + Delete",     hl.dsp.exit())
 
--- Reset window size / split back to default (Super + R)
+-- Cycle preset column widths (like Niri switch-preset-column-width: 0.5 -> 0.33333 -> 0.66667)
 hl.bind(mainMod .. " + R", function ()
-    hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
-    hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
+    local win = hl.get_active_window()
+    if not win then return end
+    local mon = hl.get_active_monitor()
+    local mon_w = (mon and mon.width) or 1920
+    local win_w = (win.size and win.size.x) or 0
+    local ratio = win_w / mon_w
+
+    if ratio < 0.42 then
+        -- Currently ~0.33333 -> switch to 0.5
+        hl.dispatch(hl.dsp.layout("colresize 0.5"))
+    elseif ratio > 0.58 then
+        -- Currently ~0.66667 (or 1.0) -> switch to 0.33333
+        hl.dispatch(hl.dsp.layout("colresize 0.33333"))
+    else
+        -- Currently ~0.5 -> switch to 0.66667
+        hl.dispatch(hl.dsp.layout("colresize 0.66667"))
+    end
 end)
 
 -- Focus Navigation (Arrows & Vim keys)
@@ -442,6 +504,10 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 -- Move window across workspaces with mainMod + CTRL + scroll (from Niri)
 hl.bind(mainMod .. " + CTRL + mouse_down", hl.dsp.window.move({ workspace = "+1" }))
 hl.bind(mainMod .. " + CTRL + mouse_up",   hl.dsp.window.move({ workspace = "-1" }))
+
+-- Scroll horizontally through windows (columns) with mainMod + SHIFT + scroll (from Niri)
+hl.bind(mainMod .. " + SHIFT + mouse_down", hl.dsp.focus({ direction = "right" }))
+hl.bind(mainMod .. " + SHIFT + mouse_up",   hl.dsp.focus({ direction = "left" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
@@ -547,4 +613,11 @@ hl.window_rule({
     match = { class = "hyprland-run" },
     move  = "20 monitor_h-120",
     float = true,
+})
+
+-- Yandex Browser full width in scrolling layout (like open-maximized-to-edges in Niri)
+hl.window_rule({
+    name            = "yandex-browser-width",
+    match           = { class = "^[yY]andex-browser" },
+    scrolling_width = 1.0,
 })

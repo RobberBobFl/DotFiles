@@ -29,12 +29,21 @@ readonly USER_HOME
 readonly DOT_DIR
 readonly LOG_FILE
 
+# PID процесса sudo keepalive
 SUDO_KEEPALIVE_PID=""
 SUDOERS_TMP=""
+WARN_UNKNOWN_ARG=false
+
 
 # =============================================================================
 # --- ФУНКЦИИ ---
 # =============================================================================
+
+show_usage_hint() {
+    if [ "$WARN_UNKNOWN_ARG" = true ]; then
+        echo -e "\e[33m[WARN]\e[0m Использование: $0 [--dry-run] [--from <step>] [--reset] [--status] [--list-steps]" >&2
+    fi
+}
 
 info() {
     if [ "$DRY_RUN" = true ]; then
@@ -274,11 +283,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-show_usage_hint() {
-    if [ "$WARN_UNKNOWN_ARG" = true ]; then
-        echo -e "\e[33m[WARN]\e[0m Использование: $0 [--dry-run] [--from <step>] [--reset] [--status] [--list-steps]" >&2
-    fi
-}
 
 # =============================================================================
 # --- ИНИЦИАЛИЗАЦИЯ ---
@@ -358,11 +362,13 @@ step_packages() {
         micro pavucontrol blueman NetworkManager network-manager-applet
         qbittorrent nodejs npm neovim filelight git
         mangohud kitty ripgrep eza wl-clipboard dconf niri
+        hyprland xdg-desktop-portal-hyprland
         gnome-keyring imv mpv nvtop kio-extras kio-admin
         gvfs-mtp gvfs-afc libmtp ffmpegthumbs kdegraphics-thumbnailers
         gnome-disk-utility fuse ncdu socat xdg-desktop-portal-wlr gparted
         xdg-terminal-exec obs-studio
         make gcc python3-pip
+        grim slurp tesseract tesseract-langpack-rus tesseract-langpack-eng
     )
 
     info "Обновление системы..."
@@ -518,7 +524,7 @@ step_pywalfox() {
 step_symlink() {
     if [ -d "$DOT_DIR" ]; then
         info "Линковка ~/.config из $DOT_DIR..."
-        run_cmd mkdir -p "$USER_HOME/.config"
+        run_cmd sudo -u "$REAL_USER" mkdir -p "$USER_HOME/.config"
 
         find "$DOT_DIR" -mindepth 1 -maxdepth 1 -print0 | while IFS= read -r -d '' item; do
             base="$(basename "$item")"
@@ -538,19 +544,19 @@ step_symlink() {
                 if [ "$DRY_RUN" = true ]; then
                     echo -e "\e[36m[DRY-RUN]\e[0m Создал бы бэкап: $backup"
                 else
-                    mv "$target" "$backup"
+                    sudo -u "$REAL_USER" mv "$target" "$backup"
                     info "Бэкап: $backup"
                 fi
             fi
 
-            run_cmd ln -sfn "$real_source" "$target"
+            run_cmd sudo -u "$REAL_USER" ln -sfn "$real_source" "$target"
             [ "$DRY_RUN" = false ] && info "Линковка: $base -> $real_source"
         done
 
         if [ -d "$USER_HOME/DotFiles/wallpaper" ]; then
             info "Настройка обоев..."
-            run_cmd mkdir -p "$USER_HOME/Pictures"
-            run_cmd ln -sfn "$USER_HOME/DotFiles/wallpaper" "$USER_HOME/Pictures/wallpaper"
+            run_cmd sudo -u "$REAL_USER" mkdir -p "$USER_HOME/Pictures"
+            run_cmd sudo -u "$REAL_USER" ln -sfn "$USER_HOME/DotFiles/wallpaper" "$USER_HOME/Pictures/wallpaper"
         else
             warn "Папка wallpaper не найдена, пропускаю."
         fi
@@ -563,45 +569,58 @@ step_theme_portals_qt() {
     info "Включение тёмной темы..."
 
     if command -v gsettings &>/dev/null; then
-        run_cmd gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null || true
+        run_cmd sudo -u "$REAL_USER" gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' 2>/dev/null || true
     elif command -v dconf &>/dev/null; then
-        run_cmd dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'" 2>/dev/null || true
+        run_cmd sudo -u "$REAL_USER" dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'" 2>/dev/null || true
     else
         warn "Ни gsettings, ни dconf не найдены, пропускаю настройку темы."
     fi
 
-    NIRI_PORTALS="/usr/share/xdg-desktop-portal/niri-portals.conf"
+    PORTAL_DIR="/usr/share/xdg-desktop-portal"
+    run_cmd sudo mkdir -p "$PORTAL_DIR"
 
-    if [ -f "$NIRI_PORTALS" ]; then
+    # 1) Niri portals
+    if [ -f "$USER_HOME/DotFiles/niri-portals.conf" ]; then
+        info "Копирование niri-portals.conf..."
+        run_cmd sudo cp "$USER_HOME/DotFiles/niri-portals.conf" "$PORTAL_DIR/niri-portals.conf"
+    elif [ -f "$PORTAL_DIR/niri-portals.conf" ]; then
         info "Настройка niri-portals.conf..."
 
         if [ "$DRY_RUN" = true ]; then
             echo -e "\e[36m[DRY-RUN]\e[0m Проверил бы/добавил бы: FileChooser=kde; ScreenCast=wlr;"
         else
-            if sudo grep -q "^org\.freedesktop\.impl\.portal\.FileChooser=" "$NIRI_PORTALS"; then
-                sudo sed -i 's|^org\.freedesktop\.impl\.portal\.FileChooser=.*|org.freedesktop.impl.portal.FileChooser=kde;|' "$NIRI_PORTALS"
+            if sudo grep -q "^org\.freedesktop\.impl\.portal\.FileChooser=" "$PORTAL_DIR/niri-portals.conf"; then
+                sudo sed -i 's|^org\.freedesktop\.impl\.portal\.FileChooser=.*|org.freedesktop.impl.portal.FileChooser=kde;|' "$PORTAL_DIR/niri-portals.conf"
                 info "Заменено: FileChooser=kde;"
             else
-                echo "org.freedesktop.impl.portal.FileChooser=kde;" | sudo tee -a "$NIRI_PORTALS" > /dev/null
+                echo "org.freedesktop.impl.portal.FileChooser=kde;" | sudo tee -a "$PORTAL_DIR/niri-portals.conf" > /dev/null
                 info "Добавлено: FileChooser=kde;"
             fi
 
-            if sudo grep -q "^org\.freedesktop\.impl\.portal\.ScreenCast=" "$NIRI_PORTALS"; then
-                sudo sed -i 's|^org\.freedesktop\.impl\.portal\.ScreenCast=.*|org.freedesktop.impl.portal.ScreenCast=wlr;|' "$NIRI_PORTALS"
+            if sudo grep -q "^org\.freedesktop\.impl\.portal\.ScreenCast=" "$PORTAL_DIR/niri-portals.conf"; then
+                sudo sed -i 's|^org\.freedesktop\.impl\.portal\.ScreenCast=.*|org.freedesktop.impl.portal.ScreenCast=wlr;|' "$PORTAL_DIR/niri-portals.conf"
                 info "Заменено: ScreenCast=wlr;"
             else
-                echo "org.freedesktop.impl.portal.ScreenCast=wlr;" | sudo tee -a "$NIRI_PORTALS" > /dev/null
+                echo "org.freedesktop.impl.portal.ScreenCast=wlr;" | sudo tee -a "$PORTAL_DIR/niri-portals.conf" > /dev/null
                 info "Добавлено: ScreenCast=wlr;"
             fi
         fi
     else
-        warn "Файл $NIRI_PORTALS не найден, пропускаю настройку порталов."
+        warn "Файл $PORTAL_DIR/niri-portals.conf не найден, пропускаю настройку порталов Niri."
+    fi
+
+    # 2) Hyprland portals
+    if [ -f "$USER_HOME/DotFiles/hyprland-portals.conf" ]; then
+        info "Копирование hyprland-portals.conf..."
+        run_cmd sudo cp "$USER_HOME/DotFiles/hyprland-portals.conf" "$PORTAL_DIR/hyprland-portals.conf"
+    else
+        warn "Файл hyprland-portals.conf не найден в DotFiles, пропускаю."
     fi
 
     info "Применение специфичных настроек QT..."
 
     if command -v kwriteconfig6 &>/dev/null; then
-        run_cmd kwriteconfig6 --file kdeglobals --group General --key TerminalApplication "alacritty"
+        run_cmd sudo -u "$REAL_USER" kwriteconfig6 --file kdeglobals --group General --key TerminalApplication "alacritty"
         [ "$DRY_RUN" = false ] && info "Установлен терминал по умолчанию: alacritty"
     else
         warn "kwriteconfig6 не найден, пропускаю настройку терминала."
