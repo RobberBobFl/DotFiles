@@ -166,7 +166,6 @@ STEPS=(
     "copr_external"
     "pywalfox"
     "symlink"
-    "homefix"
     "theme_portals_qt"
     "shell"
 )
@@ -568,54 +567,20 @@ step_symlink() {
     fi
 }
 
-# Конфиги и стейт DMS хранят абсолютные пути с домашним каталогом той машины, где их создавали.
-# На другой машине они битые: например из-за customThemeFile="/home/<тот-юзер>/..." DMS не находит
-# файл темы и вообще не запускает генерацию цветов, а за ним молчат gtk.sh/qt.sh.
-# Привязываем все /home/<любой-юзер>/ к домашнему каталогу этой машины.
-step_homefix() {
-    local repo="$USER_HOME/DotFiles"
+# Домашние пути в трекаемых конфигах (customThemeFile у DMS, color_scheme_path у qt6ct,
+# gtk-bookmarks, автодописанные PATH-блоки в config.fish) на другой машине битые.
+# Лечится git-фильтром: в репе лежит канон @@HOME@@, рабочая копия разворачивается под этого
+# пользователя. Настраивать нужно от имени пользователя, иначе .git/config станет root-owned.
+setup_dotfile_filters() {
+    local setup="$USER_HOME/DotFiles/scripts/setup-git-filters.sh"
 
-    if [ ! -d "$repo" ]; then
-        warn "Репозиторий не найден: $repo — привязка путей пропущена."
+    if [ ! -f "$setup" ]; then
+        warn "Не найден $setup — фильтрация домашних путей пропущена."
         return 0
     fi
 
-    info "Привязка абсолютных путей к домашнему каталогу $USER_HOME..."
-
-    local home_esc="${USER_HOME//&/\\&}"
-    home_esc="${home_esc//\\/\\\\}"
-    local pattern='/home/[^/[:space:]"'"'"']+/'
-
-    # сам себя не переписываем: в этом файле паттерн встречается в комментариях и примерах,
-    # а правка читаемого bash'ом скрипта — как минимум сюрприз при повторных запусках
-    local self
-    self="$(realpath "$0" 2>/dev/null || echo "")"
-
-    local touched=0
-    local file file_real
-    while IFS= read -r -d '' file; do
-        file_real="$(realpath "$file" 2>/dev/null || echo "")"
-        [ -n "$self" ] && [ "$file_real" = "$self" ] && continue
-
-        grep -qIE "$pattern" "$file" || continue
-        # трогаем только чужие домашние пути: иначе на повторном запуске шаг
-        # холосто перезаписывал бы файлы, где уже стоит наш $USER_HOME
-        grep -oIE "$pattern" "$file" | grep -vxF "$USER_HOME/" | grep -q . || continue
-
-        if [ "$DRY_RUN" = true ]; then
-            echo -e "\e[36m[DRY-RUN]\e[0m Переписал бы пути в: ${file#"$repo"/}"
-        else
-            sed -i -E "s|$pattern|$home_esc/|g" "$file"
-            info "Привязано: ${file#"$repo"/}"
-        fi
-        touched=$((touched + 1))
-    done < <(find "$repo" -type f \( -not -path '*/.git/*' \) \( -not -name '*.log' \) -print0)
-
-    if [ "$touched" -eq 0 ]; then
-        info "Путей другого пользователя не найдено."
-    else
-        warn "В репозитории на этой машине изменено файлов: $touched — локальные правки, не для push."
-    fi
+    info "Настройка git-фильтра @@HOME@@ (от $REAL_USER)..."
+    run_cmd sudo -H -u "$REAL_USER" bash "$setup"
 }
 
 step_theme_portals_qt() {
@@ -705,6 +670,10 @@ step_shell() {
 
 init_state
 
+# Вне шагов и до проверки all_done: идемпотентно, и должно выполняться даже на уже
+# настроенной машине — иначе свежие канонические файлы из репы приедут с @@HOME@@.
+setup_dotfile_filters
+
 # Проверяем, не установлено ли уже всё
 all_done=true
 for step in "${STEPS[@]}"; do
@@ -728,7 +697,6 @@ run_step "dms_install" step_dms_install
 run_step "copr_external" step_copr_external
 run_step "pywalfox" step_pywalfox
 run_step "symlink" step_symlink
-run_step "homefix" step_homefix
 run_step "theme_portals_qt" step_theme_portals_qt
 run_step "shell" step_shell
 

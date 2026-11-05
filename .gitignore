@@ -8,6 +8,8 @@
 .zcode*
 # Локальные настройки Qoder CLI
 .qoder/
+# Состояние fish (pure-дефолты, fish_user_paths): перезаписывается самим fish на каждой машине
+home/config/fish/fish_variables
 
 # Генерируется matugen/DMS при каждом применении темы: ~/.config — это symlink в репу,
 # поэтому генерация попадает в working tree. На чистой машине всё это создаёт сам DMS

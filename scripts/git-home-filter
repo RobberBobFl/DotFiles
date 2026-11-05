@@ -1,0 +1,25 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+# git clean/smudge-фильтр: в индекс кладётся канон @@HOME@@, в рабочую копию
+# разворачивается домашний каталог текущей машины. Так репа остаётся читаемой с
+# любой машины, а приложения (DMS, qt6ct, GTK) видят настоящий абсолютный путь.
+
+my $h = $ENV{HOME} // '';
+die "git-home-filter: HOME is empty or / — refusing\n" if $h eq '' || $h eq '/';
+
+my $mode = shift // '';
+die "usage: $0 clean|smudge\n" if $mode ne 'clean' && $mode ne 'smudge';
+
+# git вызывает фильтр из корня working tree и передаёт путь файла аргументом — он нам не нужен
+while (my $line = <STDIN>) {
+    if ($mode eq 'clean') {
+        # граница (?![\w.-]) запрещает только продолжение имени: /home/borrowish,
+        # /home/borrow2, /home/borrow.bak не схлопываются, а :, ), ,, ;, = — схлопываются
+        $line =~ s{\Q$h\E(?![\w.-])}{\@\@HOME\@\@}g;
+    } else {
+        $line =~ s{\@\@HOME\@\@}{$h}g;
+    }
+    print $line;
+}

@@ -1,0 +1,10 @@
+# Файлы, где приложения пишут абсолютный домашний путь, а формат не позволяет
+# обойтись ~ или $HOME. В индекс кладётся канон @@HOME@@ (фильтр настраивает
+# scripts/setup-git-filters.sh, сама реализация — scripts/git-home-filter).
+# text не ставим: он заодно включил бы нормализацию переводов строк.
+dms-dots/dms/settings.json      filter=home
+dms-dots/qt5ct/qt5ct.conf       filter=home
+dms-dots/qt6ct/qt6ct.conf       filter=home
+dms-dots/gtk-3.0/bookmarks      filter=home
+home/config/gtk-3.0/bookmarks   filter=home
+home/config/fish/config.fish    filter=home
