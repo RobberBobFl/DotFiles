@@ -1,3 +1,3 @@
 /* Путь абсолютный: этот файл достигается из ~/.config/gtk-4.0 через symlink, и относительный url разрешился бы по репозиторию. */
-@import url("/home/borrow/.local/share/themes/adw-gtk3-dark/gtk-4.0/gtk.css");
+@import url("/usr/share/themes/adw-gtk3-dark/gtk-4.0/gtk.css");
 @import url("dank-colors.css");
