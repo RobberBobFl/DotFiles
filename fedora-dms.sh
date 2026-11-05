@@ -166,6 +166,7 @@ STEPS=(
     "copr_external"
     "pywalfox"
     "symlink"
+    "homefix"
     "theme_portals_qt"
     "shell"
 )
@@ -567,6 +568,48 @@ step_symlink() {
     fi
 }
 
+# Конфиги и стейт DMS хранят абсолютные пути с домашним каталогом той машины, где их создавали.
+# На другой машине они битые: например из-за customThemeFile="/home/<тот-юзер>/..." DMS не находит
+# файл темы и вообще не запускает генерацию цветов, а за ним молчат gtk.sh/qt.sh.
+# Привязываем все /home/<любой-юзер>/ к домашнему каталогу этой машины.
+step_homefix() {
+    local repo="$USER_HOME/DotFiles"
+
+    if [ ! -d "$repo" ]; then
+        warn "Репозиторий не найден: $repo — привязка путей пропущена."
+        return 0
+    fi
+
+    info "Привязка абсолютных путей к домашнему каталогу $USER_HOME..."
+
+    local home_esc="${USER_HOME//&/\\&}"
+    home_esc="${home_esc//\\/\\\\}"
+    local pattern='/home/[^/[:space:]"'"'"']+/'
+
+    local touched=0
+    local file
+    while IFS= read -r -d '' file; do
+        grep -qIE "$pattern" "$file" || continue
+        # трогаем только чужие домашние пути: иначе на повторном запуске шаг
+        # холосто перезаписывал бы файлы, где уже стоит наш $USER_HOME
+        grep -oIE "$pattern" "$file" | grep -vxF "$USER_HOME/" | grep -q . || continue
+
+        if [ "$DRY_RUN" = true ]; then
+            echo -e "\e[36m[DRY-RUN]\e[0m Переписал бы пути в: ${file#"$repo"/}"
+        else
+            sed -i -E "s|$pattern|$home_esc/|g" "$file"
+            info "Привязано: ${file#"$repo"/}"
+        fi
+        touched=$((touched + 1))
+    done < <(find "$repo" -type f \( -not -path '*/.git/*' \) \( -not -name '*.log' \) -print0)
+
+    if [ "$touched" -eq 0 ]; then
+        info "Путей другого пользователя не найдено."
+    else
+        warn "В репозитории на этой машине изменено файлов: $touched — локальные правки, не для push."
+    fi
+}
+
 step_theme_portals_qt() {
     info "Включение тёмной темы..."
 
@@ -677,6 +720,7 @@ run_step "dms_install" step_dms_install
 run_step "copr_external" step_copr_external
 run_step "pywalfox" step_pywalfox
 run_step "symlink" step_symlink
+run_step "homefix" step_homefix
 run_step "theme_portals_qt" step_theme_portals_qt
 run_step "shell" step_shell
 
