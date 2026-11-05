@@ -1,7 +1,7 @@
 {
   "currentThemeName": "custom",
   "currentThemeCategory": "registry",
-  "customThemeFile": "/home/borrow/.config/dms/themes/gnomeAdwaita/theme.json",
+  "customThemeFile": "@@HOME@@/.config/dms/themes/gnomeAdwaita/theme.json",
   "registryThemeVariants": {
     "catppuccin": {
       "dark": {
