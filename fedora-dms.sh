@@ -586,9 +586,17 @@ step_homefix() {
     home_esc="${home_esc//\\/\\\\}"
     local pattern='/home/[^/[:space:]"'"'"']+/'
 
+    # сам себя не переписываем: в этом файле паттерн встречается в комментариях и примерах,
+    # а правка читаемого bash'ом скрипта — как минимум сюрприз при повторных запусках
+    local self
+    self="$(realpath "$0" 2>/dev/null || echo "")"
+
     local touched=0
-    local file
+    local file file_real
     while IFS= read -r -d '' file; do
+        file_real="$(realpath "$file" 2>/dev/null || echo "")"
+        [ -n "$self" ] && [ "$file_real" = "$self" ] && continue
+
         grep -qIE "$pattern" "$file" || continue
         # трогаем только чужие домашние пути: иначе на повторном запуске шаг
         # холосто перезаписывал бы файлы, где уже стоит наш $USER_HOME
