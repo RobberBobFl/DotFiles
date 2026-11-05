@@ -311,6 +311,7 @@ hl.config({
     misc = {
         force_default_wallpaper = -1,    -- Set to 0 or 1 to disable the anime mascot wallpapers
         disable_hyprland_logo   = false, -- If true disables the random hyprland logo / anime girl background. :(
+        focus_on_activate       = true,
     },
     binds = {
         workspace_back_and_forth         = true,
@@ -460,13 +461,14 @@ hl.bind(mainMod .. " + J",     hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + K",     hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + Tab",   hl.dsp.focus({ workspace = "previous" }))
 
--- Move Windows (Arrows & Vim keys)
-hl.bind(mainMod .. " + CTRL + left",  hl.dsp.window.move({ direction = "left" }))
-hl.bind(mainMod .. " + CTRL + right", hl.dsp.window.move({ direction = "right" }))
+-- Move Windows / Swap Columns (Arrows & Vim keys)
+-- Left/Right: swap columns (like Niri move-column-left/right) instead of consume
+hl.bind(mainMod .. " + CTRL + left",  hl.dsp.layout("swapcol l"))
+hl.bind(mainMod .. " + CTRL + right", hl.dsp.layout("swapcol r"))
 hl.bind(mainMod .. " + CTRL + up",    hl.dsp.window.move({ direction = "up" }))
 hl.bind(mainMod .. " + CTRL + down",  hl.dsp.window.move({ direction = "down" }))
-hl.bind(mainMod .. " + CTRL + H",     hl.dsp.window.move({ direction = "left" }))
-hl.bind(mainMod .. " + CTRL + L",     hl.dsp.window.move({ direction = "right" }))
+hl.bind(mainMod .. " + CTRL + H",     hl.dsp.layout("swapcol l"))
+hl.bind(mainMod .. " + CTRL + L",     hl.dsp.layout("swapcol r"))
 hl.bind(mainMod .. " + CTRL + J",     hl.dsp.window.move({ workspace = "+1" }))
 hl.bind(mainMod .. " + CTRL + K",     hl.dsp.window.move({ workspace = "-1" }))
 
@@ -508,6 +510,10 @@ hl.bind(mainMod .. " + CTRL + mouse_up",   hl.dsp.window.move({ workspace = "-1"
 -- Scroll horizontally through windows (columns) with mainMod + SHIFT + scroll (from Niri)
 hl.bind(mainMod .. " + SHIFT + mouse_down", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + SHIFT + mouse_up",   hl.dsp.focus({ direction = "left" }))
+
+-- Move column left/right with mainMod + CTRL + SHIFT + scroll (from Niri)
+hl.bind(mainMod .. " + CTRL + SHIFT + mouse_down", hl.dsp.layout("swapcol r"))
+hl.bind(mainMod .. " + CTRL + SHIFT + mouse_up",   hl.dsp.layout("swapcol l"))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
