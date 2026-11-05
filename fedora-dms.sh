@@ -163,7 +163,6 @@ STEPS=(
     "packages"
     "gitbuilds"
     "dms_install"
-    "copr_external"
     "pywalfox"
     "symlink"
     "theme_portals_qt"
@@ -496,17 +495,6 @@ step_dms_install() {
     run_cmd sudo dnf install -y --skip-unavailable xdg-desktop-portal-hyprland
 }
 
-step_copr_external() {
-    info "Установка opencode..."
-    run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://opencode.ai/install | bash'
-
-    info "Установка ollama..."
-    run_cmd sudo bash -c 'curl -fsSL https://ollama.com/install.sh | sh'
-
-    info "Установка pi..."
-    run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://pi.dev/install.sh | sh'
-}
-
 step_pywalfox() {
     info "Установка pywalfox..."
     run_cmd sudo -u "$REAL_USER" python3 -m pip install --user --break-system-packages pywalfox
@@ -694,7 +682,6 @@ run_step "flathub" step_flathub
 run_step "packages" step_packages
 run_step "gitbuilds" step_gitbuilds
 run_step "dms_install" step_dms_install
-run_step "copr_external" step_copr_external
 run_step "pywalfox" step_pywalfox
 run_step "symlink" step_symlink
 run_step "theme_portals_qt" step_theme_portals_qt
