@@ -179,7 +179,7 @@ if [[ "$choice" == "1" ]]; then
 
     PKGS_PACMAN=(
         breeze adw-gtk-theme capitaine-cursors tela-circle-icon-theme-all
-        ddcutil i2c-tools dgop matugen fish gnome-calculator xdg-desktop-portal-gtk
+        ddcutil i2c-tools dux-gop matugen fish gnome-calculator xdg-desktop-portal-gtk
         gnome-keyring xwayland-satellite alacritty cliphist wlsunset qt6-wayland
         qt5-wayland kvantum kvantum-qt5 baobab ttf-roboto ttf-fira-code
         ttf-firacode-nerd micro pavucontrol blueman networkmanager
@@ -192,9 +192,9 @@ if [[ "$choice" == "1" ]]; then
         archlinux-xdg-menu tesseract tesseract-data-rus tesseract-data-eng
     )
     PKGS_AUR=(
-        greetd-dms-greeter-git yandex-browser
+        dux-greeter-git yandex-browser
         geany-themes xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
-        portprotonqt python-pywalfox dms-shell-git quickshell-git wayfreeze-git
+        portprotonqt python-pywalfox dux-shell-git quickshell-git wayfreeze-git
     )
 
 elif [[ "$choice" == "2" ]]; then
@@ -203,7 +203,7 @@ elif [[ "$choice" == "2" ]]; then
     PKGS_PACMAN=(
         dolphin kate ark kcalc breeze adw-gtk-theme capitaine-cursors
         tela-circle-icon-theme-all
-        ddcutil i2c-tools dgop matugen fish
+        ddcutil i2c-tools dux-gop matugen fish
         xdg-desktop-portal-kde xwayland-satellite alacritty cliphist wlsunset
         qt6-wayland qt5-wayland kvantum kvantum-qt5 ttf-roboto ttf-fira-code
         ttf-firacode-nerd micro pavucontrol blueman networkmanager
@@ -216,9 +216,9 @@ elif [[ "$choice" == "2" ]]; then
         fuse2 foliate zed obs-studio ncdu socat xdg-desktop-portal-wlr gparted tesseract tesseract-data-rus tesseract-data-eng
     )
     PKGS_AUR=(
-        greetd-dms-greeter-git yandex-browser
+        dux-greeter-git yandex-browser
         xdg-terminal-exec qt6ct-kde qt5ct-kde dsearch-bin
-        portprotonqt python-pywalfox dms-shell-git quickshell-git wayfreeze-git
+        portprotonqt python-pywalfox dux-shell-git quickshell-git wayfreeze-git
     )
 else
     error "Неверный выбор. Введите 1 или 2."

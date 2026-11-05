@@ -162,7 +162,6 @@ STEPS=(
     "flathub"
     "packages"
     "gitbuilds"
-    "dms_prep"
     "dms_install"
     "copr_external"
     "pywalfox"
@@ -447,47 +446,50 @@ step_gitbuilds() {
     build_tela
 }
 
-step_dms_prep() {
-    info "Подготовка зависимостей DMS (COPR + пакеты, чтобы dankinstall не звал sudo)..."
-    run_cmd sudo dnf copr enable -y avengemedia/danklinux
-    run_cmd sudo dnf copr enable -y avengemedia/dms
-    run_cmd sudo dnf install -y golang-bin git gcc make tar unzip
-    run_cmd sudo dnf install -y dms dms-greeter quickshell matugen cliphist danksearch dgop dankcalendar-git ghostty
-}
+# Официальный установщик DMS (duxinstall, ex-dankinstall).
+# Headless-режим включается только когда переданы ОБА флага: --compositor и --term.
+# Инсталлер отказывается работать под root и требует кэшированные sudo-креды,
+# поэтому запускается от $REAL_USER поверх временного sudoers из setup_temp_sudoers().
+DMS_INSTALL_URL="https://install.duxlabs.dev"
+DMS_TERMINAL="alacritty"
 
-install_dms() {
-    info "Установка DMS через официальный инсталлер (dankinstall) от $REAL_USER..."
+# --compositor принимает ровно одно значение, поэтому каждый WM ставится отдельным прогоном.
+# Второй прогон определяет уже установленные зависимости как OK и лишь добирает свой WM + его конфиг.
+DMS_COMPOSITORS=("niri" "hyprland")
+
+run_duxinstall() {
+    local compositor="$1"
+    shift
+
+    info "Установка DMS: --compositor $compositor --term $DMS_TERMINAL $* (от $REAL_USER)..."
+
     if [ "$DRY_RUN" = true ]; then
-        echo -e "\e[36m[DRY-RUN]\e[0m Скачал бы и запустил dankinstall от $REAL_USER"
+        echo -e "\e[36m[DRY-RUN]\e[0m curl -fsSL $DMS_INSTALL_URL | sh -s -- --compositor $compositor --term $DMS_TERMINAL --yes $*"
         return 0
     fi
-    sudo -u "$REAL_USER" bash -s <<'DMSINSTALL'
-set -e
-ARCH=$(uname -m)
-case "$ARCH" in
-  x86_64) ARCH="amd64" ;;
-  aarch64) ARCH="arm64" ;;
-  *) echo "Неподдерживаемая архитектура: $ARCH"; exit 1 ;;
-esac
-LATEST_VERSION=$(curl -s https://api.github.com/repos/AvengeMedia/DankMaterialShell/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-[ -z "$LATEST_VERSION" ] && { echo "Не удалось получить версию DMS"; exit 1; }
-TEMP_DIR=$(mktemp -d)
-cd "$TEMP_DIR"
-curl -L "https://github.com/AvengeMedia/DankMaterialShell/releases/download/$LATEST_VERSION/dankinstall-$ARCH.gz" -o installer.gz
-curl -L "https://github.com/AvengeMedia/DankMaterialShell/releases/download/$LATEST_VERSION/dankinstall-$ARCH.gz.sha256" -o expected.sha256
-EXPECTED=$(awk '{print $1}' expected.sha256)
-ACTUAL=$(sha256sum installer.gz | awk '{print $1}')
-if [ "$EXPECTED" != "$ACTUAL" ]; then echo "Ошибка проверки checksum DMS"; exit 1; fi
-gunzip installer.gz
-chmod +x installer
-./installer
-cd /
-rm -rf "$TEMP_DIR"
-DMSINSTALL
+
+    # pipefail обязателен: без него отвалившийся curl при `curl | sh` даёт exit 0,
+    # и шаг ошибочно отмечался бы выполненным.
+    sudo -H -u "$REAL_USER" bash -o pipefail -c '
+        url="$1"; compositor="$2"; term="$3"
+        shift 3
+        curl -fsSL "$url" | sh -s -- --compositor "$compositor" --term "$term" --yes "$@"
+    ' _ "$DMS_INSTALL_URL" "$compositor" "$DMS_TERMINAL" "$@"
 }
 
 step_dms_install() {
-    install_dms
+    # --all-features только в первом прогоне: он включает необязательные dux-greeter/dux-search/dux-calendar/dux-files.
+    # WM-зависимости (hyprland, hyprctl, jq, hyprland-guiutils) помечены Required и ставятся без него,
+    # а повтор флага второй раз заново крутил бы greeter install и сервис dux-search.
+    local first=true
+    for compositor in "${DMS_COMPOSITORS[@]}"; do
+        if [ "$first" = true ]; then
+            run_duxinstall "$compositor" --all-features
+            first=false
+        else
+            run_duxinstall "$compositor"
+        fi
+    done
 }
 
 step_copr_external() {
@@ -671,7 +673,6 @@ run_step "geoblock" step_geoblock
 run_step "flathub" step_flathub
 run_step "packages" step_packages
 run_step "gitbuilds" step_gitbuilds
-run_step "dms_prep" step_dms_prep
 run_step "dms_install" step_dms_install
 run_step "copr_external" step_copr_external
 run_step "pywalfox" step_pywalfox
