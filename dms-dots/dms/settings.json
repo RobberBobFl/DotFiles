@@ -571,5 +571,7 @@
   "keyboardOptions": "grp:alt_shift_toggle",
   "modalElevationEnabled": true,
   "widgetColorMode": "default",
-  "iconThemePerMode": false
+  "iconThemePerMode": false,
+  "matugenSpec": "dms",
+  "matugenScheme": "scheme-expressive"
 }
