@@ -6,6 +6,8 @@
 .changelog-*
 # ZCode
 .zcode*
+# Локальные настройки Qoder CLI
+.qoder/
 
 # Генерируется matugen/DMS при каждом применении темы: ~/.config — это symlink в репу,
 # поэтому генерация попадает в working tree. На чистой машине всё это создаёт сам DMS

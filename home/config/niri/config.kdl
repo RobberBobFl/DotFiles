@@ -193,7 +193,7 @@ binds {
     spawn-sh-at-startup "/usr/lib64/mate-polkit/polkit-mate-authentication-agent-1 &" // Polkit
     //spawn-sh-at-startup "swww-daemon" // Демон обоев
     // spawn-sh-at-startup "swaybg -i ~/Pictures/wallpaper/bqogmi642yqf1.png" // Установить обои
-    spawn-sh-at-startup "/home/borrow/.config/waybar/scripts/random_walpap.sh" // Рандомные обои, каждые 2 часа
+    spawn-sh-at-startup "~/.config/waybar/scripts/random_walpap.sh" // Рандомные обои, каждые 2 часа
     spawn-sh-at-startup "waybar" // Запустить Waybar
     spawn-sh-at-startup "v2rayn" //vpn
     spawn-sh-at-startup "/usr/lib/xdg-desktop-portal-gtk"

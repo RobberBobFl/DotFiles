@@ -108,8 +108,8 @@ spawn-sh-at-startup "dms run"
 //spawn-at-startup "noctalia"
 //spawn-sh-at-startup "/usr/lib64/mate-polkit/polkit-mate-authentication-agent-1 &" 
 //spawn-sh-at-startup "v2rayn"
-spawn-sh-at-startup "/home/borrow/Throne/Throne"
-spawn-sh-at-startup "/usr/lib/xdg-desktop-portal-gtk"
+spawn-sh-at-startup "~/Throne/Throne"
+//spawn-sh-at-startup "/usr/lib/xdg-desktop-portal-gtk"
 spawn-sh-at-startup "wlsunset -S 07:00 -s 20:00 -t 3500 -T 6500 -d 0"
 
 prefer-no-csd 
@@ -166,7 +166,7 @@ environment {
     QT_WAYLAND_DISABLE_WINDOWDECORATION "1" 
     XDG_SESSION_TYPE "wayland" 
     XDG_CURRENT_DESKTOP "niri" 
-    XDG_TERMINAL_EXEC "kitty" 
+    XDG_TERMINAL_EXEC "alacritty"
     TERMINAL "kitty"
     XDG_MENU_PREFIX "plasma-"
 }

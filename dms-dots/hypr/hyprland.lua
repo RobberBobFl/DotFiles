@@ -55,7 +55,7 @@ local menu        = "dms ipc call spotlight toggle"
 -- See https://wiki.hypr.land/Configuring/Basics/Autostart/
 hl.on("hyprland.start", function ()
     hl.exec_cmd("dms run")
-    hl.exec_cmd("/home/borrow/Throne/Throne")
+    hl.exec_cmd("~/Throne/Throne")
     hl.exec_cmd("/usr/lib/xdg-desktop-portal-gtk")
     hl.exec_cmd("wlsunset -S 07:00 -s 20:00 -t 3500 -T 6500 -d 0")
 end)
@@ -370,9 +370,9 @@ local mainMod = "SUPER" -- Sets "Windows" key as main modifier
 hl.bind(mainMod .. " + Return",    hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + E",         hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + B",         hl.dsp.exec_cmd(browser))
-hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("/home/borrow/Telegram/Telegram"))
+hl.bind(mainMod .. " + SHIFT + T", hl.dsp.exec_cmd("~/Telegram/Telegram"))
 hl.bind("XF86Calculator",         hl.dsp.exec_cmd("kcalc"))
-hl.bind("F9",                     hl.dsp.exec_cmd("/home/borrow/.config/hypr/scripts/wayland-ocr.sh"))
+hl.bind("F9",                     hl.dsp.exec_cmd("~/.config/hypr/scripts/wayland-ocr.sh"))
 
 -- DMS Shell Integrations (Dux Shell)
 hl.bind(mainMod .. " + space",          hl.dsp.exec_cmd("dms ipc call spotlight toggle"))
@@ -387,7 +387,9 @@ hl.bind(mainMod .. " + O",              hl.dsp.exec_cmd("dms ipc call hypr toggl
 hl.bind(mainMod .. " + SHIFT + Escape", hl.dsp.exec_cmd("dms ipc call hypr toggleBinds"))
 
 -- Screenshots (interactive region, full screen, window)
-local screenshotDir = "/home/borrow/Pictures/Screenshots"
+-- Раскрывается shell'ом: exec_cmd собирает строку и передаёт в sh, поэтому `~` здесь работает
+-- только без кавычек — не оборачивать screenshotDir в кавычки при правках ниже.
+local screenshotDir = "~/Pictures/Screenshots"
 hl.bind("Print",              hl.dsp.exec_cmd("dms screenshot -d " .. screenshotDir))
 hl.bind("CTRL + Print",       hl.dsp.exec_cmd("dms screenshot full -d " .. screenshotDir))
 hl.bind("CTRL + ALT + Print", hl.dsp.exec_cmd("dms screenshot window -d " .. screenshotDir))

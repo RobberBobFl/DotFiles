@@ -83,7 +83,7 @@ binds {
     MOD+B { spawn "yandex-browser-stable"; }
     MOD+E { spawn "dolphin"; }
     MOD+RETURN { spawn "alacritty"; }
-    MOD+SHIFT+T { spawn "/home/borrow/Telegram/Telegram"; }
+    MOD+SHIFT+T { spawn "~/Telegram/Telegram"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
     XF86AudioMicMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
     XF86AudioMute allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
