@@ -161,6 +161,21 @@ if [ "$DRY_RUN" = false ]; then
     start_sudo_keepalive
 fi
 
+# git-фильтр @@HOME@@ написан на perl, без него конфиги останутся с литералом @@HOME@@
+# и DMS не найдёт файл темы. В Arch perl входит в base, но ставим явно на голой системе.
+ensure_perl() {
+    command -v perl &>/dev/null && return 0
+
+    warn "perl не найден — нужен git-фильтру @@HOME@@ (scripts/git-home-filter)."
+    info "Устанавливаю perl..."
+    run_cmd sudo pacman -S --needed --noconfirm perl
+
+    if [ "$DRY_RUN" = false ] && ! command -v perl &>/dev/null; then
+        error "perl установить не удалось. Поставь вручную (sudo pacman -S perl) и перезапусти."
+    fi
+}
+ensure_perl
+
 # =============================================================================
 # --- ВЫБОР НАБОРА ПАКЕТОВ ---
 # =============================================================================

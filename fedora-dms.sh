@@ -300,6 +300,21 @@ if ! command -v dnf &>/dev/null; then
     error "Этот скрипт предназначен только для Fedora (dnf не найден)."
 fi
 
+# git-фильтр @@HOME@@ написан на perl, без него конфиги останутся с литералом @@HOME@@
+# и DMS не найдёт файл темы. Ставим сами и не идём дальше, если не вышло.
+ensure_perl() {
+    command -v perl &>/dev/null && return 0
+
+    warn "perl не найден — нужен git-фильтру @@HOME@@ (scripts/git-home-filter)."
+    info "Устанавливаю perl..."
+    run_cmd sudo dnf install -y perl
+
+    if [ "$DRY_RUN" = false ] && ! command -v perl &>/dev/null; then
+        error "perl установить не удалось. Поставь вручную (sudo dnf install -y perl) и перезапусти."
+    fi
+}
+ensure_perl
+
 if ! [ -f /etc/fedora-release ]; then
     warn "Похоже, это не Fedora (/etc/fedora-release не найден). Продолжаю на свой страх и риск."
 fi
