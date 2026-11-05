@@ -37,8 +37,29 @@ done
 
 if [ ${#stale[@]} -gt 0 ]; then
     echo "setup-git-filters: разворачиваю канон @@HOME@@ в: ${stale[*]}"
-    git -C "$root" checkout --force -- "${stale[@]}"
+    # checkout (даже --force) тут не годится: после pull без фильтра рабочая копия побайтово
+    # равна индексу, git считает файл актуальным и smudge не запускает. Разворачиваем сами —
+    # канон из индекса через тот же фильтр, атомарно через temp+mv.
+    for f in "${stale[@]}"; do
+        tmp="$root/$f.tmp.$$"
+        git -C "$root" show ":$f" | perl "$root/scripts/git-home-filter" smudge > "$tmp"
+        mv -f "$tmp" "$root/$f"
+    done
 fi
+
+# git status считает файл грязным по стат-данным: рабочая копия длиннее индекса, хотя после
+# clean содержимое совпадает побайтово (git diff при этом пустой, --really-refresh не помогает).
+# Пересчитываем кэш staging'ом по всему списку и следим, чтобы он оказался no-op: если blob
+# изменился, в файле настоящие правки — снимаем staging и предупреждаем.
+for f in "${present[@]}"; do
+    before="$(git -C "$root" rev-parse ":$f")"
+    git -C "$root" add -- "$f"
+    after="$(git -C "$root" rev-parse ":$f")"
+    if [ "$before" != "$after" ]; then
+        git -C "$root" reset -q -- "$f"
+        echo "setup-git-filters: в $f есть реальные изменения — оставил как есть" >&2
+    fi
+done
 
 # Контроль «не забыли развернуть»: канон в рабочей копии означает, что файлы читались
 # до настройки фильтра (например, свежий клон), и приложения получат @@HOME@@ вместо пути.
