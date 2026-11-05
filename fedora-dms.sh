@@ -361,11 +361,10 @@ step_packages() {
         micro pavucontrol blueman NetworkManager network-manager-applet
         qbittorrent nodejs npm neovim filelight git
         mangohud kitty ripgrep eza wl-clipboard dconf niri
-        hyprland xdg-desktop-portal-hyprland
         gnome-keyring imv mpv nvtop kio-extras kio-admin
         gvfs-mtp gvfs-afc libmtp ffmpegthumbs kdegraphics-thumbnailers
         gnome-disk-utility fuse ncdu socat xdg-desktop-portal-wlr gparted
-        xdg-terminal-exec obs-studio
+        xdg-terminal-exec obs-studio firefox
         make gcc python3-pip
         grim slurp tesseract tesseract-langpack-rus tesseract-langpack-eng
     )
@@ -490,13 +489,14 @@ step_dms_install() {
             run_duxinstall "$compositor"
         fi
     done
+
+    # Инсталлер сам подключает COPR lionheartp/Hyprland, но портал туда не входит в список зависимостей,
+    # а hyprland-portals.conf ссылается на него (default=hyprland;kde). Ставим следом, пока COPR включён.
+    info "Установка xdg-desktop-portal-hyprland (из COPR, который включил инсталлер)..."
+    run_cmd sudo dnf install -y --skip-unavailable xdg-desktop-portal-hyprland
 }
 
 step_copr_external() {
-    info "Установка portprotonqt (COPR boria138/portproton)..."
-    run_cmd sudo dnf copr enable -y boria138/portproton
-    run_cmd sudo dnf install -y portproton
-
     info "Установка opencode..."
     run_cmd sudo -u "$REAL_USER" bash -c 'curl -fsSL https://opencode.ai/install | bash'
 
