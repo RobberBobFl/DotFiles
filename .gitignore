@@ -6,3 +6,6 @@
 .changelog-*
 # ZCode
 .zcode*
+
+# Генерируется matugen при каждой смене темы (пишет сквозь symlink в ~/.config)
+dms-dots/gtk-*/dank-colors.css
