@@ -145,7 +145,7 @@ set -gx PATH $PATH /home/borrow/.lmstudio/bin
 
 
 # Added by Antigravity CLI installer
-set -gx PATH "/home/borrow/.local/bin" $PATH
+set -gx PATH "$HOME/.local/bin" $PATH
 
 # QODER_DISPATCHER_PATH v1
 fish_add_path -p -m $HOME/.qoder/entry
