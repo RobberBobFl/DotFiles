@@ -7,5 +7,20 @@
 # ZCode
 .zcode*
 
-# Генерируется matugen при каждой смене темы (пишет сквозь symlink в ~/.config)
+# Генерируется matugen/DMS при каждом применении темы: ~/.config — это symlink в репу,
+# поэтому генерация попадает в working tree. На чистой машине всё это создаёт сам DMS
+# (generateThemeAtStartup по умолчанию включён), в git оно не нужно.
 dms-dots/gtk-*/dank-colors.css
+dms-dots/niri/dms/colors.kdl
+dms-dots/niri/dms/binds-next.kdl
+dms-dots/hypr/dms/colors.lua
+dms-dots/mango/dms/colors.conf
+dms-dots/kitty/dank-theme.conf
+dms-dots/kitty/dank-tabs.conf
+dms-dots/qt5ct/colors/matugen.conf
+dms-dots/qt6ct/colors/matugen.conf
+dms-dots/dms/firefox.css
+dms-dots/dms/zen.css
+home/config/alacritty/dank-theme.toml
+home/config/nvim/colors/dms.lua
+home/config/nvim/lua/lualine/themes/dms.lua

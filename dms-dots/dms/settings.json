@@ -570,5 +570,6 @@
   ],
   "keyboardOptions": "grp:alt_shift_toggle",
   "modalElevationEnabled": true,
-  "widgetColorMode": "default"
+  "widgetColorMode": "default",
+  "iconThemePerMode": false
 }
