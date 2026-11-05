@@ -24,3 +24,7 @@ dms-dots/dms/zen.css
 home/config/alacritty/dank-theme.toml
 home/config/nvim/colors/dms.lua
 home/config/nvim/lua/lualine/themes/dms.lua
+
+# Плагины не храним в репе: это отдельные git-репозитории.
+# Ставятся командой "dms plugins restore" по затреканному dms/plugins.lock.json.
+dms-dots/dms/plugins/
